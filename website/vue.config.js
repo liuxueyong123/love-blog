@@ -1,4 +1,4 @@
-const IS_PROD = process.env.NODE_ENV === 'production';
+// const IS_PROD = process.env.NODE_ENV === 'production';
 
 module.exports = {
   css: {
@@ -8,7 +8,8 @@ module.exports = {
       },
     },
   },
-  publicPath: IS_PROD ? 'https://web-cdn.agora.io/dev_community/' : '/',
+  // publicPath: IS_PROD ? 'https://web-cdn.agora.io/dev_community/' : '/',
+  publicPath: '/',
   devServer: {
     port: 8080,
     host: 'localhost',
