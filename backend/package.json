@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon index.js",
-    "publish": "ssh root@106.15.170.172 && cd ./application/love-blog/ && git pull && cd ./website && yarn build && pm2 reload index"
+    "push-online": "ssh root@106.15.170.172 && cd ./application/love-blog/ && git pull && cd ./website && yarn build && pm2 reload index"
   },
   "keywords": [],
   "author": "",
