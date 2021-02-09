@@ -7,9 +7,6 @@ const indexPage = async (ctx) => {
 };
 
 const router = new Router();
-router.get('/api', async(ctx) => {
-  ctx.body = {1: 1}
-})
 
 router.get('/(.*)', indexPage);
 

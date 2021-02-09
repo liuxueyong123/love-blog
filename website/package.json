@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "start": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build && node oss.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "ali-oss": "^6.13.2",
     "core-js": "^3.6.5",
     "vant": "^3.0.6",
     "vue": "^3.0.0",
