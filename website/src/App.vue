@@ -1,14 +1,19 @@
 <template>
   <div id="layout">
     <router-view />
+    <MenuComponent class="menu-component" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import MenuComponent from '@/components/MenuComponent.vue';
 
 export default defineComponent({
   name: 'App',
+  components: {
+    MenuComponent,
+  },
 });
 </script>
 
@@ -21,6 +26,7 @@ export default defineComponent({
   margin: 0 auto;
   overflow: auto;
   padding-top: m-px2vw(20);
+  padding-bottom: m-px2vw(50);
 
   &::before {
     position: absolute;
@@ -33,6 +39,13 @@ export default defineComponent({
     opacity: 0.8;
     content: "";
     z-index: -1;
+  }
+
+  .menu-component {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
   }
 }
 
