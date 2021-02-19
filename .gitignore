@@ -3,6 +3,7 @@ node_modules
 dist
 
 /website/config.js
+/backend/config.js
 
 # local env files
 .env.local
