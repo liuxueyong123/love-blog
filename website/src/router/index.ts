@@ -7,7 +7,7 @@ const routes: Array<RouteRecordRaw> = [
     name: 'HomePage',
     component: HomePage,
     meta: {
-      title: 'lxy&tsy |首页',
+      title: 'lxy&tsy | 首页',
     },
   },
   {
@@ -15,7 +15,7 @@ const routes: Array<RouteRecordRaw> = [
     name: 'ArticlePage',
     component: () => import(/* webpackChunkName: "article" */ '../views/Article.page.vue'),
     meta: {
-      title: 'lxy&tsy |文章',
+      title: 'lxy&tsy | 文章',
     },
   },
   {
@@ -23,7 +23,7 @@ const routes: Array<RouteRecordRaw> = [
     name: 'PostPage',
     component: () => import(/* webpackChunkName: "post" */ '../views/Post.page.vue'),
     meta: {
-      title: 'lxy&tsy |帖子',
+      title: 'lxy&tsy | 帖子',
     },
   },
   {
@@ -31,7 +31,7 @@ const routes: Array<RouteRecordRaw> = [
     name: 'AlbumPage',
     component: () => import(/* webpackChunkName: "album" */ '../views/Album.page.vue'),
     meta: {
-      title: 'lxy&tsy |相册',
+      title: 'lxy&tsy | 相册',
     },
   },
   // {

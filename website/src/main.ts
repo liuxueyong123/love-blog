@@ -1,5 +1,7 @@
 import { createApp } from 'vue';
-import { Button } from 'vant';
+import {
+  Button, Picker, Field, Popup,
+} from 'vant';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -10,5 +12,8 @@ app.use(store);
 app.use(router);
 
 app.use(Button);
+app.use(Picker);
+app.use(Field);
+app.use(Popup);
 
 app.mount('#app');
