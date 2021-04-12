@@ -19,7 +19,6 @@ export default defineComponent({
 
 <style lang="scss">
 #layout {
-  // height: 100vh;
   width: 100vw;
   position: relative;
   max-width: 500px;

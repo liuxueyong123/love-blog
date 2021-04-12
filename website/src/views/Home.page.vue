@@ -39,14 +39,11 @@
         <AvatarComponent class="item-avatar"  :gender="genderMap[item.gender]" />
         <div class="item-name">{{item.userName}}</div>
         <div class="item-content">{{item.articleContent}}</div>
-        <div class="item-like-wrapper">
-          <div
-            class="like-icon"
-            :class="{'lick-icon-animation': item.alreadyLike}"
-            @click="handleLikeClick(item.id)"
-          ></div>
-          <div class="like-content">{{item.iconNumber}} like</div>
-        </div>
+        <GiveLikeComponent
+          :alreadyLike="item.alreadyLike"
+          :likeCount="item.iconNumber"
+          @handleClick="handleLikeClick(item.id)"
+        />
       </div>
     </div>
   </div>
@@ -55,6 +52,7 @@
 <script lang="ts">
 import { defineComponent, reactive } from 'vue';
 import AvatarComponent from '@/components/AvatarComponent.vue';
+import GiveLikeComponent from '@/components/GiveLike.component.vue';
 import { genderMap } from '@/utils';
 
 const menuList = [
@@ -116,6 +114,7 @@ export default defineComponent({
   name: 'HomePage',
   components: {
     AvatarComponent,
+    GiveLikeComponent,
   },
   setup() {
     const articleList = reactive(initialArticleList);
@@ -324,32 +323,6 @@ export default defineComponent({
           display:-webkit-box; //作为弹性伸缩盒子模型显示。
           -webkit-box-orient:vertical; //设置伸缩盒子的子元素排列方式--从上到下垂直排列
           -webkit-line-clamp:2; //显示的行
-        }
-
-        .item-like-wrapper {
-          display: flex;
-          margin-left: call($fn, -15);
-
-          .like-icon {
-            display: block;
-            width: call($fn, 40);
-            height: call($fn, 40);
-            background-image: url("http://lxy520.top/images/icon-like.png");
-            background-repeat: no-repeat;
-            background-size: 2900%;   //爱心图片的像素大小为2900*100
-          }
-
-          .lick-icon-animation {
-            animation: mymoveOK .8s linear;
-            animation-fill-mode: forwards;    //动画结束时固定在最后一帧
-            animation-timing-function: steps(28);     //非常重要的属性  没有TA，动画就no OK
-          }
-
-          .like-content {
-            font-size: call($fn, 16);
-            line-height: call($fn, 20);
-            margin-top: call($fn, 10);
-          }
         }
       }
     }

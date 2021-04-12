@@ -9,7 +9,9 @@ router.route({
   path: '/user',
   handler: async (ctx) => {
     const users = await UserModel.findAll();
-    ctx.body = users
+
+    ctx.body = users;
+    ctx.status = 200;
   },
 })
 

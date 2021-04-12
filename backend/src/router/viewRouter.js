@@ -8,6 +8,6 @@ const indexPage = async (ctx) => {
 
 const router = new Router();
 
-router.get('/(.*)', indexPage);
+router.get('/page/(.*)', indexPage);
 
-module.exports = router
+module.exports = router;

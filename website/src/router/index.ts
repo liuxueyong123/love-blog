@@ -21,7 +21,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/post',
     name: 'PostPage',
-    component: () => import(/* webpackChunkName: "post" */ '../views/Post.page.vue'),
+    component: () => import(/* webpackChunkName: "post" */ '../views/post/Post.page.vue'),
     meta: {
       title: 'lxy&tsy | 帖子',
     },
@@ -34,18 +34,18 @@ const routes: Array<RouteRecordRaw> = [
       title: 'lxy&tsy | 相册',
     },
   },
-  // {
-  //   path: '/about',
-  //   name: 'About',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
-  // },
+  {
+    path: '/login',
+    name: 'LoginPage',
+    component: () => import(/* webpackChunkName: "login" */ '../views/Login.page.vue'),
+    meta: {
+      title: 'lxy&tsy | 登录',
+    },
+  },
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory('/page'),
   routes,
 });
 

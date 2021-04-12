@@ -12,6 +12,12 @@ User.init(
     account: {
       type: DataTypes.STRING,
     },
+    name: {
+      type: DataTypes.STRING,
+    },
+    gender: {
+      type: DataTypes.INTEGER,
+    },
   },
   {
     modelName: "user",

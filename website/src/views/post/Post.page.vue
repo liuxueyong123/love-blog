@@ -2,7 +2,21 @@
   <section class='post-page'>
     <PageHeaderComponent icon="http://lxy520.top/images/nav-icon-post.png" title="Posts" />
 
-    <div class="share-btn">Hi, Sayyeah°! What do you want to share?</div>
+    <van-overlay :show="showPublishCardRef">
+      <div class="submit-post-wrapper">
+        <div class="choose-type-card" v-show="isChooseType">
+          <div>isChooseType</div>
+          <button @click="goToEditStep">goToEditStep</button>
+        </div>
+        <div class="edit-text-card" v-show="isEditText" @click="setShowPublishCardRef(false)">
+          <div>isEditText</div>
+        </div>
+      </div>
+    </van-overlay>
+
+    <div class="share-btn" @click="openNewPublishCard">
+      Hi, Sayyeah°! What do you want to share?
+    </div>
 
     <div class="filter-wrapper">
       <van-field
@@ -41,18 +55,22 @@
     </div>
 
     <div class="post-wrapper">
-      <div class="post-item">
-        <div class="post-header"></div>
-        <div class="post-content">111</div>
-        <div class="post-handler-wrapper"></div>
-      </div>
+      <PostItemComponent />
     </div>
   </section>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue';
+import {
+  defineComponent, reactive, ref, computed,
+} from 'vue';
 import PageHeaderComponent from '@/components/PageHeaderComponent.vue';
+import PostItemComponent from '@/views/post/PostItem.Component.vue';
+
+enum PublishStep {
+  chooseType = 1,
+  editText = 2
+}
 
 const typeFilterList = ['All', 'travel', 'dirary'];
 const timeFilterList = ['All', 'New - Old', 'Old - New'];
@@ -60,6 +78,7 @@ const timeFilterList = ['All', 'New - Old', 'Old - New'];
 export default defineComponent({
   components: {
     PageHeaderComponent,
+    PostItemComponent,
   },
   name: 'PostPage',
   setup() {
@@ -67,8 +86,6 @@ export default defineComponent({
     const showTypeFilterRef = ref(false);
     const timeFilterRef = ref('');
     const showTimeFilterRef = ref(false);
-
-    const postList = reactive([]);
 
     const onTypeFilterConfirm = (value: string) => {
       typeFilterRef.value = value;
@@ -80,6 +97,26 @@ export default defineComponent({
       showTimeFilterRef.value = false;
     };
 
+    const showPublishCardRef = ref(false);
+    const publishStepRef = ref(PublishStep.chooseType);
+    const isChooseType = computed(() => publishStepRef.value === PublishStep.chooseType);
+    const isEditText = computed(() => publishStepRef.value === PublishStep.editText);
+
+    const setShowPublishCardRef = (show: boolean) => {
+      showPublishCardRef.value = show;
+    };
+
+    const goToEditStep = () => {
+      publishStepRef.value = PublishStep.editText;
+    };
+
+    const openNewPublishCard = () => {
+      publishStepRef.value = PublishStep.chooseType;
+      showPublishCardRef.value = true;
+    };
+
+    const postList = reactive([]);
+
     return {
       typeFilterRef,
       showTypeFilterRef,
@@ -90,6 +127,12 @@ export default defineComponent({
       onTypeFilterConfirm,
       onTimeFilterConfirm,
       postList,
+      showPublishCardRef,
+      setShowPublishCardRef,
+      isChooseType,
+      isEditText,
+      goToEditStep,
+      openNewPublishCard,
     };
   },
 });
@@ -113,6 +156,27 @@ export default defineComponent({
       line-height: call($fn, 40);
       font-size: call($fn, 14);
       font-weight: 500;
+    }
+
+    .submit-post-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+
+      .choose-type-card {
+        width: 80%;
+        height: 80%;
+        border-radius: call($fn, 10);
+        background-color: #fff;
+      }
+
+      .edit-text-card {
+        width: 80%;
+        height: 50%;
+        border-radius: call($fn, 10);
+        background-color: #fff;
+      }
     }
 
     .filter-wrapper {
@@ -155,15 +219,6 @@ export default defineComponent({
 
     .post-wrapper {
       margin-top: call($fn, 20);
-
-      .post-item {
-        width: 100%;
-        background: rgba(255, 255, 255, 0.7);
-        border-radius: call($fn, 8);
-        border: 1px solid #e1e1e2;
-        box-shadow: 0 1px 2px #e1e1e2;
-        padding: call($fn, 5) call($fn, 10);
-      }
     }
   }
 }
