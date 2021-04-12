@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import { defineComponent, reactive, onMounted } from 'vue';
 import AvatarComponent from '@/components/AvatarComponent.vue';
 import GiveLikeComponent from '@/components/GiveLike.component.vue';
 import { genderMap } from '@/utils';

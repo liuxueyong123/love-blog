@@ -37,7 +37,7 @@ router.route({
       JSON.stringify({
         id: user.id,
         account: user.account,
-        name: user.name,
+        name: escape(user.name),
         gender: user.gender
       }),
       {
