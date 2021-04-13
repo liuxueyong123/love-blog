@@ -24,8 +24,8 @@ export default defineComponent({
   max-width: 500px;
   margin: 0 auto;
   overflow: auto;
-  padding-top: m-px2vw(20);
-  padding-bottom: m-px2vw(50);
+  padding-top: mobilePx2vw(20);
+  padding-bottom: mobilePx2vw(50);
 
   &::before {
     position: absolute;
@@ -52,7 +52,7 @@ export default defineComponent({
   #layout {
     border-left: 1px solid #e6f3fe;
     border-right: 1px solid #e6f3fe;
-    padding-top: m2ipad(20);
+    padding-top: ipadPx2vw(20);
   }
 }
 </style>

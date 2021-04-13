@@ -190,14 +190,14 @@ export default defineComponent({
             margin-right: 0;
 
             .span {
-              color: $light-text;
+              color: $lightTextColor;
               font-size: call($fn, 12);
             }
           }
 
           .van-cell__value {
             .van-field__control {
-              color: $text;
+              color: $textColor;
               font-size: call($fn, 14);
             }
           }
@@ -212,10 +212,10 @@ export default defineComponent({
 }
 
 @media screen and (max-width: 500px) {
-  @include mobile(get-function('m-px2vw'), $m-padding);
+  @include mobile(get-function('mobilePx2vw'), $mobilePadding);
 }
 
 @media screen and (min-width: 500px) {
-  @include mobile(get-function('m2ipad'), $ipad-padding);
+  @include mobile(get-function('ipadPx2vw'), $ipadPadding);
 }
 </style>

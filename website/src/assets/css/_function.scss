@@ -8,12 +8,12 @@
   @return $vwNumber + px;
 }
 
-@function m-px2vw($args) {
+@function mobilePx2vw($args) {
   $vwNumber: inspect($args / 3.75);
   @return $vwNumber + vw;
 }
 
-@function m2ipad($args) {
+@function ipadPx2vw($args) {
   $vwNumber: inspect($args * 500 / 375);
   @return $vwNumber + px;
 }

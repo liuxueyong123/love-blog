@@ -168,7 +168,7 @@ export default defineComponent({
         .name {
           line-height: call($fn, 25);
           font-size: call($fn, 20);
-          color: $light-text;
+          color: $lightTextColor;
         }
 
         .greet {
@@ -268,14 +268,14 @@ export default defineComponent({
               margin-left: call($fn, 5);
               font-size: call($fn, 12);
               line-height: call($fn, 20);
-              color: $light-text;
+              color: $lightTextColor;
             }
           }
 
           .item-time {
             font-size: call($fn, 12);
             line-height: call($fn, 20);
-            color: $light-text;
+            color: $lightTextColor;
           }
         }
       }
@@ -316,7 +316,7 @@ export default defineComponent({
           margin-top: call($fn, 10);
           font-size: call($fn, 14);
           line-height: call($fn, 18);
-          color: $light-text;
+          color: $lightTextColor;
           height: call($fn, 36);
           overflow: hidden;
           text-overflow: ellipsis;
@@ -330,10 +330,10 @@ export default defineComponent({
 }
 
 @media screen and (max-width: 500px) {
-  @include mobile(get-function('m-px2vw'), $m-padding);
+  @include mobile(get-function('mobilePx2vw'), $mobilePadding);
 }
 
 @media screen and (min-width: 500px) {
-  @include mobile(get-function('m2ipad'), $ipad-padding);
+  @include mobile(get-function('ipadPx2vw'), $ipadPadding);
 }
 </style>

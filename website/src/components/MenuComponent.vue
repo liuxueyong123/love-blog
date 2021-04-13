@@ -78,7 +78,7 @@ export default defineComponent({
           margin: 0 auto;
           margin-top: call($fn, 3);
           height: call($fn, 2);
-          background: $primary;
+          background: $primaryColor;
           animation: scaleIn 0.7s;
         }
       }
@@ -87,10 +87,10 @@ export default defineComponent({
 }
 
 @media screen and (max-width: 500px) {
-  @include mobile(get-function('m-px2vw'), $m-padding);
+  @include mobile(get-function('mobilePx2vw'), $mobilePadding);
 }
 
 @media screen and (min-width: 500px) {
-  @include mobile(get-function('m2ipad'), $ipad-padding);
+  @include mobile(get-function('ipadPx2vw'), $ipadPadding);
 }
 </style>

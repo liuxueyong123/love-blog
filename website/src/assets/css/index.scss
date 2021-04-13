@@ -1,15 +1,14 @@
-@import './font.scss';
-@import './color.scss';
-@import './response.scss';
-@import './global.scss';
-@import './keyframes.scss';
+@import './_font.scss';
+@import './_function.scss';
+@import './_var.scss';
+@import './_keyframes.scss';
 
 * {
 	padding: 0;
 	margin: 0;
   font-family: Whitney SSM;
   box-sizing: border-box;
-  color: $text;
+  color: $textColor;
 }
 
 .my-toast {

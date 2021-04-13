@@ -48,10 +48,10 @@ export default defineComponent({
 }
 
 @media screen and (max-width: 500px) {
-  @include mobile(get-function('m-px2vw'), $m-padding);
+  @include mobile(get-function('mobilePx2vw'), $mobilePadding);
 }
 
 @media screen and (min-width: 500px) {
-  @include mobile(get-function('m2ipad'), $ipad-padding);
+  @include mobile(get-function('ipadPx2vw'), $ipadPadding);
 }
 </style>

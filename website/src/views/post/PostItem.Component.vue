@@ -77,7 +77,7 @@ export default defineComponent({
           margin-top: call($fn, 4);
           font-size: call($fn, 10);
           line-height: 1;
-          color: $light-text;
+          color: $lightTextColor;
         }
       }
     }
@@ -90,7 +90,7 @@ export default defineComponent({
       padding-bottom: call($fn, 10);
       font-size: call($fn, 14);
       line-height: 1.2;
-      color: $light-text;
+      color: $lightTextColor;
     }
 
     .post-comment-wrapper {
@@ -109,7 +109,7 @@ export default defineComponent({
         .comment {
           font-size: call($fn, 12);
           line-height: 1;
-          color: $light-text;
+          color: $lightTextColor;
         }
       }
     }
@@ -135,12 +135,12 @@ export default defineComponent({
           padding-right: call($fn, 30);
           border: call($fn, 1) solid #eaecef;
           font-size: call($fn, 12);
-          color: $light-text;
+          color: $lightTextColor;
           line-height: call($fn, 32);
 
           &::placeholder {
             font-size: call($fn, 12);
-            color: $light-text;
+            color: $lightTextColor;
             line-height: call($fn, 32);
             opacity: 0.5;
           }
@@ -161,10 +161,10 @@ export default defineComponent({
 }
 
 @media screen and (max-width: 500px) {
-  @include mobile(get-function('m-px2vw'), $m-padding);
+  @include mobile(get-function('mobilePx2vw'), $mobilePadding);
 }
 
 @media screen and (min-width: 500px) {
-  @include mobile(get-function('m2ipad'), $ipad-padding);
+  @include mobile(get-function('ipadPx2vw'), $ipadPadding);
 }
 </style>
