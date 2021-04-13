@@ -1,18 +1,17 @@
 <template>
-  <section class='article-page'>article-page</section>
+  <section class="article-page">article-page</section>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'ArticlePage',
-});
+})
 </script>
 
 <style lang="scss" scoped>
 @mixin mobile($fn, $padding) {
-
 }
 
 @media screen and (max-width: 500px) {

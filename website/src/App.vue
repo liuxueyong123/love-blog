@@ -6,15 +6,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import MenuComponent from '@/components/MenuComponent.vue';
+import { defineComponent } from 'vue'
+import MenuComponent from '@/components/MenuComponent.vue'
 
 export default defineComponent({
   name: 'App',
   components: {
     MenuComponent,
   },
-});
+})
 </script>
 
 <style lang="scss">
@@ -36,7 +36,7 @@ export default defineComponent({
     background-image: url('http://lxy520.top/images/layout-background-1.png');
     background-size: 100% 100%;
     opacity: 0.8;
-    content: "";
+    content: '';
     z-index: -1;
   }
 

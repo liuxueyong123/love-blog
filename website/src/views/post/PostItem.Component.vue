@@ -1,5 +1,5 @@
 <template>
-  <section class='post-item-component'>
+  <section class="post-item-component">
     <div class="post-header">
       <AvatarComponent class="avatar" gender="female" />
       <div class="right">
@@ -7,7 +7,9 @@
         <div class="date">2021/03/31 10:56</div>
       </div>
     </div>
-    <div class="post-content">具体内容见：其中现有页面问题及页面逻辑问题需要一起调整，如调整过程中有问题可以在相应页面备注</div>
+    <div class="post-content">
+      具体内容见：其中现有页面问题及页面逻辑问题需要一起调整，如调整过程中有问题可以在相应页面备注
+    </div>
     <div class="post-comment-wrapper">
       <div class="comment-item">
         <span class="name">Sayyeah°：</span>
@@ -19,11 +21,7 @@
       </div>
     </div>
     <div class="post-handler-wrapper">
-      <GiveLikeComponent
-        :alreadyLike="alreadyLike"
-        :likeCount="iconNumber"
-        @handleClick="handleLikeClick(id)"
-      />
+      <GiveLikeComponent :alreadyLike="alreadyLike" :likeCount="iconNumber" @handleClick="handleLikeClick(id)" />
       <div class="right">
         <input type="text" class="comment-input" placeholder="Write a comment..." />
         <div class="post-icon"></div>
@@ -33,9 +31,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import AvatarComponent from '@/components/AvatarComponent.vue';
-import GiveLikeComponent from '@/components/GiveLike.component.vue';
+import { defineComponent } from 'vue'
+import AvatarComponent from '@/components/AvatarComponent.vue'
+import GiveLikeComponent from '@/components/GiveLike.component.vue'
 
 export default defineComponent({
   name: 'PostItemComponent',
@@ -43,10 +41,10 @@ export default defineComponent({
     AvatarComponent,
     GiveLikeComponent,
   },
-});
+})
 </script>
 
-<style scoped lang='scss'>
+<style scoped lang="scss">
 @mixin mobile($fn, $padding) {
   .post-item-component {
     width: 100%;
@@ -158,7 +156,6 @@ export default defineComponent({
           background-size: 100% 100%;
         }
       }
-
     }
   }
 }

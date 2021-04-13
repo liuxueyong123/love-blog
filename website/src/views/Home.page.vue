@@ -23,22 +23,22 @@
       <div class="article-item" v-for="(item, index) in articleList" :key="index">
         <img class="item-image" :src="item.imgUrl" />
         <div class="item-right">
-          <div class="item-name">{{item.articleName}}</div>
+          <div class="item-name">{{ item.articleName }}</div>
           <div class="item-writer-info">
-             <AvatarComponent class="writer-avatar"  :gender="genderMap[item.gender]" />
-            <div class="writer-name">{{item.userName}}</div>
+            <AvatarComponent class="writer-avatar" :gender="genderMap[item.gender]" />
+            <div class="writer-name">{{ item.userName }}</div>
           </div>
-          <div class="item-time">{{item.publishTime}}</div>
+          <div class="item-time">{{ item.publishTime }}</div>
         </div>
       </div>
     </div>
 
     <div class="section-title">Recent Posts</div>
     <div class="post-wrapper">
-      <div class="post-item" v-for="(item) in postList.values()" :key="item.id">
-        <AvatarComponent class="item-avatar"  :gender="genderMap[item.gender]" />
-        <div class="item-name">{{item.userName}}</div>
-        <div class="item-content">{{item.articleContent}}</div>
+      <div class="post-item" v-for="item in postList.values()" :key="item.id">
+        <AvatarComponent class="item-avatar" :gender="genderMap[item.gender]" />
+        <div class="item-name">{{ item.userName }}</div>
+        <div class="item-content">{{ item.articleContent }}</div>
         <GiveLikeComponent
           :alreadyLike="item.alreadyLike"
           :likeCount="item.iconNumber"
@@ -50,10 +50,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, onMounted } from 'vue';
-import AvatarComponent from '@/components/AvatarComponent.vue';
-import GiveLikeComponent from '@/components/GiveLike.component.vue';
-import { genderMap } from '@/utils';
+import { defineComponent, reactive } from 'vue'
+import AvatarComponent from '@/components/AvatarComponent.vue'
+import GiveLikeComponent from '@/components/GiveLike.component.vue'
+import { genderMap } from '@/utils'
 
 const menuList = [
   {
@@ -72,7 +72,7 @@ const menuList = [
     name: 'Message',
     imgUrl: 'http://lxy520.top/images/homepage-menu-message.png',
   },
-];
+]
 
 const initialArticleList = [
   {
@@ -89,7 +89,7 @@ const initialArticleList = [
     gender: 2,
     publishTime: '2021/01/03 12:23:23',
   },
-];
+]
 
 const initialPostList = [
   {
@@ -108,7 +108,7 @@ const initialPostList = [
     iconNumber: 0,
     alreadyLike: false,
   },
-];
+]
 
 export default defineComponent({
   name: 'HomePage',
@@ -117,18 +117,18 @@ export default defineComponent({
     GiveLikeComponent,
   },
   setup() {
-    const articleList = reactive(initialArticleList);
-    const postList = reactive(new Map(initialPostList.map((x) => [x.id, x])));
+    const articleList = reactive(initialArticleList)
+    const postList = reactive(new Map(initialPostList.map(x => [x.id, x])))
 
     const handleLikeClick = (id: number) => {
-      const item = postList.get(id);
+      const item = postList.get(id)
       if (!item) {
-        console.log('id 不存在');
-        return;
+        console.log('id 不存在')
+        return
       }
 
-      item.alreadyLike = !item.alreadyLike;
-    };
+      item.alreadyLike = !item.alreadyLike
+    }
 
     return {
       menuList,
@@ -136,9 +136,9 @@ export default defineComponent({
       postList,
       handleLikeClick,
       genderMap,
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>
@@ -296,7 +296,7 @@ export default defineComponent({
         height: call($fn, 180);
         padding: call($fn, 10) call($fn, 15);
 
-        &:nth-child(n+3) {
+        &:nth-child(n + 3) {
           margin-top: call($fn, 10);
         }
 
@@ -320,9 +320,9 @@ export default defineComponent({
           height: call($fn, 36);
           overflow: hidden;
           text-overflow: ellipsis;
-          display:-webkit-box; //作为弹性伸缩盒子模型显示。
-          -webkit-box-orient:vertical; //设置伸缩盒子的子元素排列方式--从上到下垂直排列
-          -webkit-line-clamp:2; //显示的行
+          display: -webkit-box; //作为弹性伸缩盒子模型显示。
+          -webkit-box-orient: vertical; //设置伸缩盒子的子元素排列方式--从上到下垂直排列
+          -webkit-line-clamp: 2; //显示的行
         }
       }
     }

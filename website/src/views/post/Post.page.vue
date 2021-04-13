@@ -1,5 +1,5 @@
 <template>
-  <section class='post-page'>
+  <section class="post-page">
     <PageHeaderComponent icon="http://lxy520.top/images/nav-icon-post.png" title="Posts" />
 
     <van-overlay :show="showPublishCardRef">
@@ -14,9 +14,7 @@
       </div>
     </van-overlay>
 
-    <div class="share-btn" @click="openNewPublishCard">
-      Hi, Sayyeah°! What do you want to share?
-    </div>
+    <div class="share-btn" @click="openNewPublishCard">Hi, Sayyeah°! What do you want to share?</div>
 
     <div class="filter-wrapper">
       <van-field
@@ -29,11 +27,7 @@
         class="type-filter filter"
       />
       <van-popup v-model:show="showTypeFilterRef" round position="bottom">
-        <van-picker
-          :columns="typeFilterList"
-          @cancel="showTypeFilterRef = false"
-          @confirm="onTypeFilterConfirm"
-        />
+        <van-picker :columns="typeFilterList" @cancel="showTypeFilterRef = false" @confirm="onTypeFilterConfirm" />
       </van-popup>
 
       <van-field
@@ -43,14 +37,10 @@
         label="Time :"
         placeholder="time filter"
         @click="showTimeFilterRef = true"
-         class="time-filter filter"
+        class="time-filter filter"
       />
       <van-popup v-model:show="showTimeFilterRef" round position="bottom">
-        <van-picker
-          :columns="timeFilterList"
-          @cancel="showTimeFilterRef = false"
-          @confirm="onTimeFilterConfirm"
-        />
+        <van-picker :columns="timeFilterList" @cancel="showTimeFilterRef = false" @confirm="onTimeFilterConfirm" />
       </van-popup>
     </div>
 
@@ -61,19 +51,17 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent, reactive, ref, computed,
-} from 'vue';
-import PageHeaderComponent from '@/components/PageHeaderComponent.vue';
-import PostItemComponent from '@/views/post/PostItem.Component.vue';
+import { defineComponent, reactive, ref, computed } from 'vue'
+import PageHeaderComponent from '@/components/PageHeaderComponent.vue'
+import PostItemComponent from '@/views/post/PostItem.Component.vue'
 
 enum PublishStep {
   chooseType = 1,
-  editText = 2
+  editText = 2,
 }
 
-const typeFilterList = ['All', 'travel', 'dirary'];
-const timeFilterList = ['All', 'New - Old', 'Old - New'];
+const typeFilterList = ['All', 'travel', 'dirary']
+const timeFilterList = ['All', 'New - Old', 'Old - New']
 
 export default defineComponent({
   components: {
@@ -82,40 +70,40 @@ export default defineComponent({
   },
   name: 'PostPage',
   setup() {
-    const typeFilterRef = ref('');
-    const showTypeFilterRef = ref(false);
-    const timeFilterRef = ref('');
-    const showTimeFilterRef = ref(false);
+    const typeFilterRef = ref('')
+    const showTypeFilterRef = ref(false)
+    const timeFilterRef = ref('')
+    const showTimeFilterRef = ref(false)
 
     const onTypeFilterConfirm = (value: string) => {
-      typeFilterRef.value = value;
-      showTypeFilterRef.value = false;
-    };
+      typeFilterRef.value = value
+      showTypeFilterRef.value = false
+    }
 
     const onTimeFilterConfirm = (value: string) => {
-      timeFilterRef.value = value;
-      showTimeFilterRef.value = false;
-    };
+      timeFilterRef.value = value
+      showTimeFilterRef.value = false
+    }
 
-    const showPublishCardRef = ref(false);
-    const publishStepRef = ref(PublishStep.chooseType);
-    const isChooseType = computed(() => publishStepRef.value === PublishStep.chooseType);
-    const isEditText = computed(() => publishStepRef.value === PublishStep.editText);
+    const showPublishCardRef = ref(false)
+    const publishStepRef = ref(PublishStep.chooseType)
+    const isChooseType = computed(() => publishStepRef.value === PublishStep.chooseType)
+    const isEditText = computed(() => publishStepRef.value === PublishStep.editText)
 
     const setShowPublishCardRef = (show: boolean) => {
-      showPublishCardRef.value = show;
-    };
+      showPublishCardRef.value = show
+    }
 
     const goToEditStep = () => {
-      publishStepRef.value = PublishStep.editText;
-    };
+      publishStepRef.value = PublishStep.editText
+    }
 
     const openNewPublishCard = () => {
-      publishStepRef.value = PublishStep.chooseType;
-      showPublishCardRef.value = true;
-    };
+      publishStepRef.value = PublishStep.chooseType
+      showPublishCardRef.value = true
+    }
 
-    const postList = reactive([]);
+    const postList = reactive([])
 
     return {
       typeFilterRef,
@@ -133,9 +121,9 @@ export default defineComponent({
       isEditText,
       goToEditStep,
       openNewPublishCard,
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>
@@ -209,7 +197,7 @@ export default defineComponent({
 
           .van-cell__value {
             .van-field__control {
-               color: $text;
+              color: $text;
               font-size: call($fn, 14);
             }
           }

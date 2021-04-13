@@ -1,12 +1,7 @@
 <template>
-  <section class='menu-component'>
+  <section class="menu-component">
     <div class="menu-wrapper">
-      <router-link
-        v-for="item in menuList"
-        :key="item.id"
-        :to="{ name: item.to }"
-        class="menu-item"
-      >
+      <router-link v-for="item in menuList" :key="item.id" :to="{ name: item.to }" class="menu-item">
         <img class="item-icon" :src="item.imgUrl" />
         <div class="item-selected" v-if="item.routes.includes($route.name)"></div>
       </router-link>
@@ -15,7 +10,7 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent } from 'vue'
 
 const menuList = [
   {
@@ -42,18 +37,18 @@ const menuList = [
     routes: ['AlbumPage'],
     to: 'AlbumPage',
   },
-];
+]
 
 export default defineComponent({
   name: 'MenuComponent',
   setup() {
     return {
       menuList,
-    };
+    }
   },
-});
+})
 </script>
-<style scoped lang='scss'>
+<style scoped lang="scss">
 @mixin mobile($fn, $padding) {
   .menu-component {
     width: 100%;
@@ -75,7 +70,7 @@ export default defineComponent({
           margin-top: call($fn, 10);
           display: block;
           width: call($fn, 30);
-          height: call($fn, 30)
+          height: call($fn, 30);
         }
 
         .item-selected {

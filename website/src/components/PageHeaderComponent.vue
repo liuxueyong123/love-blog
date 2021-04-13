@@ -2,15 +2,15 @@
   <div class="page-header">
     <div class="header-left">
       <img class="header-icon" :src="icon" />
-      <div class="header-title">{{title}}</div>
+      <div class="header-title">{{ title }}</div>
     </div>
     <AvatarComponent class="header-avatar" gender="female" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import AvatarComponent from '@/components/AvatarComponent.vue';
+import { defineComponent, PropType } from 'vue'
+import AvatarComponent from '@/components/AvatarComponent.vue'
 
 export default defineComponent({
   components: {
@@ -27,7 +27,7 @@ export default defineComponent({
       required: true,
     },
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>
