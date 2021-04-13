@@ -1,5 +1,5 @@
-const { Model, DataTypes } = require("sequelize");
-const db = require("./db");
+const { Model, DataTypes } = require('sequelize')
+const db = require('./db')
 
 class Album extends Model {}
 
@@ -7,30 +7,30 @@ Album.init(
   {
     id: {
       type: DataTypes.INTEGER,
-      primaryKey: true,
+      primaryKey: true
     },
     image_link: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     picture_time: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     type_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER
     },
     upload_account_id: {
-      type: DataTypes.INTEGER,
-    },
+      type: DataTypes.INTEGER
+    }
   },
   {
-    modelName: "album",
-    tableName: "album",
+    modelName: 'album',
+    tableName: 'album',
     timestamps: false,
-    sequelize: db.loveBlog,
+    sequelize: db.loveBlog
   }
-);
+)
 
-module.exports = Album;
+module.exports = Album

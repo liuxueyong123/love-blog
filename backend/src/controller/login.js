@@ -22,12 +22,12 @@ router.route({
         account,
         password
       }
-    });
+    })
 
-    if(!user) {
+    if (!user) {
       ctx.status = 400
       ctx.body = {
-        error : 'Account and password is not matched'
+        error: 'Account and password is not matched'
       }
       return
     }
@@ -41,14 +41,14 @@ router.route({
         gender: user.gender
       }),
       {
-        maxAge: 1000 * 60  * 60 * 24 * 7, // cookie有效时长
-        overwrite: false  // 是否允许重写
+        maxAge: 1000 * 60 * 60 * 24 * 7, // cookie有效时长
+        overwrite: false // 是否允许重写
       }
     )
 
     ctx.status = 200
     ctx.body = {}
-  },
+  }
 })
 
 module.exports = router

@@ -1,8 +1,9 @@
-const Koa = require('koa');
+import Koa from 'koa'
+
 const { publicRouters, privateRouters } = require('./src/router/apiRouter')
 const viewRouter = require('./src/router/viewRouter.js')
-const app = new Koa();
-const port = 8081;
+const app = new Koa()
+const port = 8081
 
 app
   .use(async (ctx, next) => {
@@ -17,8 +18,8 @@ app
   .use(viewRouter.routes())
   .use(publicRouters)
   .use(async (ctx, next) => {
-    const cookie = ctx.cookies.get('lxyAndTsy')
-    try{
+    const cookie = ctx.cookies.get('lxyAndTsy') as string
+    try {
       const parsedCookie = JSON.parse(cookie)
       console.log(parsedCookie)
     } catch {}
@@ -27,8 +28,8 @@ app
     ctx.body = {}
     // await next()
   })
-  .use(privateRouters);
+  .use(privateRouters)
 
-app.listen(port, async() => {
-  console.log(`Http Server is running on ${port}`);
-});
+app.listen(port, async () => {
+  console.log(`Http Server is running on ${port}`)
+})

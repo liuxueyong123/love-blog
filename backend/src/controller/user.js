@@ -8,11 +8,11 @@ router.route({
   method: 'get',
   path: '/user',
   handler: async (ctx) => {
-    const users = await UserModel.findAll();
+    const users = await UserModel.findAll()
 
-    ctx.body = users;
-    ctx.status = 200;
-  },
+    ctx.body = users
+    ctx.status = 200
+  }
 })
 
 module.exports = router

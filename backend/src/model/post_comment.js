@@ -1,5 +1,5 @@
-const { Model, DataTypes } = require("sequelize");
-const db = require("./db");
+const { Model, DataTypes } = require('sequelize')
+const db = require('./db')
 
 class PostComment extends Model {}
 
@@ -7,24 +7,24 @@ PostComment.init(
   {
     id: {
       type: DataTypes.INTEGER,
-      primaryKey: true,
+      primaryKey: true
     },
     post_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER
     },
     content: {
-      type: DataTypes.Text,
+      type: DataTypes.Text
     },
     publish_time: {
-      type: DataTypes.STRING,
-    },
+      type: DataTypes.STRING
+    }
   },
   {
-    modelName: "post_comment",
-    tableName: "post_comment",
+    modelName: 'post_comment',
+    tableName: 'post_comment',
     timestamps: false,
-    sequelize: db.loveBlog,
+    sequelize: db.loveBlog
   }
-);
+)
 
-module.exports = User;
+module.exports = PostComment

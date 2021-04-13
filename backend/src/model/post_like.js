@@ -1,5 +1,5 @@
-const { Model, DataTypes } = require("sequelize");
-const db = require("./db");
+const { Model, DataTypes } = require('sequelize')
+const db = require('./db')
 
 class PostLike extends Model {}
 
@@ -7,21 +7,21 @@ PostLike.init(
   {
     id: {
       type: DataTypes.INTEGER,
-      primaryKey: true,
+      primaryKey: true
     },
     account_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER
     },
     post_id: {
-      type: DataTypes.INTEGER,
-    },
+      type: DataTypes.INTEGER
+    }
   },
   {
-    modelName: "post_like",
-    tableName: "post_like",
+    modelName: 'post_like',
+    tableName: 'post_like',
     timestamps: false,
-    sequelize: db.loveBlog,
+    sequelize: db.loveBlog
   }
-);
+)
 
-module.exports = PostLike;
+module.exports = PostLike
