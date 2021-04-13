@@ -13,4 +13,12 @@
 
 .my-toast {
   width: 50% !important;
+
+  &.van-toast--fail {
+    background-color: #FEF0F0 !important;
+
+    .van-icon {
+      color: red;
+    }
+  }
 }

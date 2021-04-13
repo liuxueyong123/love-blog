@@ -8,18 +8,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, getCurrentInstance, ComponentInternalInstance } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import useAxios from '@/hooks/useAxios'
 
 export default defineComponent({
   name: 'LoginPage',
   setup() {
-    const internalInstance = getCurrentInstance() as ComponentInternalInstance
-    const axios = internalInstance.appContext.config.globalProperties.$axios
-
     const accountRef = ref('')
     const passwordRef = ref('')
+
     const router = useRouter()
+    const axios = useAxios()
 
     const submitLogin = async () => {
       await axios.request({

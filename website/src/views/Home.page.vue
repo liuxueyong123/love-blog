@@ -50,10 +50,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive, onMounted } from 'vue'
 import AvatarComponent from '@/components/AvatarComponent.vue'
 import GiveLikeComponent from '@/components/GiveLike.component.vue'
 import { genderMap } from '@/utils'
+// import useAxios from '@/hooks/useAxios'
 
 const menuList = [
   {
@@ -120,6 +121,8 @@ export default defineComponent({
     const articleList = reactive(initialArticleList)
     const postList = reactive(new Map(initialPostList.map(x => [x.id, x])))
 
+    // const axios = useAxios()
+
     const handleLikeClick = (id: number) => {
       const item = postList.get(id)
       if (!item) {
@@ -129,6 +132,12 @@ export default defineComponent({
 
       item.alreadyLike = !item.alreadyLike
     }
+
+    onMounted(() => {
+      // axios.request({
+      //   url: '/user',
+      // })
+    })
 
     return {
       menuList,

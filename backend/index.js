@@ -17,6 +17,12 @@ app
   .use(viewRouter.routes())
   .use(publicRouters)
   .use(async (ctx, next) => {
+    const cookie = ctx.cookies.get('lxyAndTsy')
+    try{
+      const parsedCookie = JSON.parse(cookie)
+      console.log(parsedCookie)
+    } catch {}
+
     ctx.status = 401
     ctx.body = {}
     // await next()
