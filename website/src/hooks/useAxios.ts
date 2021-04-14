@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { Toast } from 'vant'
-import { useRouter, Router } from 'vue-router'
 
 const initConfig = () => {
   // axios.defaults.baseURL = ''  //正式
@@ -12,7 +11,7 @@ const initConfig = () => {
   axios.defaults.timeout = 10000
 }
 
-const initInterceptors = (router: Router) => {
+const initInterceptors = () => {
   axios.interceptors.request.use(
     config => config,
     error => Promise.reject(error),
@@ -27,7 +26,7 @@ const initInterceptors = (router: Router) => {
     },
     error => {
       if (error.response.status === 401) {
-        router.push('/login')
+        location.href = location.host + '/page/login'
       }
 
       const message = error.response.data.error || 'Opps...'
@@ -44,12 +43,10 @@ const initInterceptors = (router: Router) => {
   )
 }
 
+initConfig()
+initInterceptors()
+
 const useAxios = () => {
-  const router = useRouter()
-
-  initConfig()
-  initInterceptors(router)
-
   return axios
 }
 

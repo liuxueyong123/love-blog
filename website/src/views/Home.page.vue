@@ -25,7 +25,7 @@
         <div class="item-right">
           <div class="item-name">{{ item.articleName }}</div>
           <div class="item-writer-info">
-            <AvatarComponent class="writer-avatar" :gender="genderMap[item.gender]" />
+            <AvatarComponent class="writer-avatar" :gender="GenderMap[item.gender]" />
             <div class="writer-name">{{ item.userName }}</div>
           </div>
           <div class="item-time">{{ item.publishTime }}</div>
@@ -36,7 +36,7 @@
     <div class="section-title">Recent Posts</div>
     <div class="post-wrapper">
       <div class="post-item" v-for="item in postList.values()" :key="item.id">
-        <AvatarComponent class="item-avatar" :gender="genderMap[item.gender]" />
+        <AvatarComponent class="item-avatar" :gender="GenderMap[item.gender]" />
         <div class="item-name">{{ item.userName }}</div>
         <div class="item-content">{{ item.articleContent }}</div>
         <GiveLikeComponent
@@ -50,11 +50,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, onMounted } from 'vue'
+import { defineComponent, reactive } from 'vue'
 import AvatarComponent from '@/components/AvatarComponent.vue'
 import GiveLikeComponent from '@/components/GiveLike.component.vue'
-import { genderMap } from '@/utils'
-// import useAxios from '@/hooks/useAxios'
+import { GenderMap } from '@/utils'
 
 const menuList = [
   {
@@ -121,8 +120,6 @@ export default defineComponent({
     const articleList = reactive(initialArticleList)
     const postList = reactive(new Map(initialPostList.map(x => [x.id, x])))
 
-    // const axios = useAxios()
-
     const handleLikeClick = (id: number) => {
       const item = postList.get(id)
       if (!item) {
@@ -133,18 +130,12 @@ export default defineComponent({
       item.alreadyLike = !item.alreadyLike
     }
 
-    onMounted(() => {
-      // axios.request({
-      //   url: '/user',
-      // })
-    })
-
     return {
       menuList,
       articleList,
       postList,
       handleLikeClick,
-      genderMap,
+      GenderMap,
     }
   },
 })
@@ -338,11 +329,5 @@ export default defineComponent({
   }
 }
 
-@media screen and (max-width: 500px) {
-  @include mobile(get-function('mobilePx2vw'), $mobilePadding);
-}
-
-@media screen and (min-width: 500px) {
-  @include mobile(get-function('ipadPx2vw'), $ipadPadding);
-}
+@include mediaMixin;
 </style>

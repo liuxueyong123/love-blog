@@ -25,13 +25,17 @@ export default defineComponent({
 })
 </script>
 <style scoped lang="scss">
-.avatar-component {
-  width: 100%;
-  height: 100%;
-
-  .avatar {
+@mixin mobile($fn, $padding) {
+  .avatar-component {
     width: 100%;
     height: 100%;
+
+    .avatar {
+      width: 100%;
+      height: 100%;
+    }
   }
 }
+
+@include mediaMixin;
 </style>

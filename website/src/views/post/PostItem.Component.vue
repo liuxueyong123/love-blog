@@ -160,11 +160,5 @@ export default defineComponent({
   }
 }
 
-@media screen and (max-width: 500px) {
-  @include mobile(get-function('mobilePx2vw'), $mobilePadding);
-}
-
-@media screen and (min-width: 500px) {
-  @include mobile(get-function('ipadPx2vw'), $ipadPadding);
-}
+@include mediaMixin;
 </style>

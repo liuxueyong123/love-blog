@@ -8,6 +8,7 @@ const routes: Array<RouteRecordRaw> = [
     component: HomePage,
     meta: {
       title: 'lxy&tsy | 首页',
+      requireAuth: true,
     },
   },
   {
@@ -16,6 +17,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "article" */ '../views/Article.page.vue'),
     meta: {
       title: 'lxy&tsy | 文章',
+      requireAuth: true,
     },
   },
   {
@@ -24,6 +26,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "post" */ '../views/post/Post.page.vue'),
     meta: {
       title: 'lxy&tsy | 帖子',
+      requireAuth: true,
     },
   },
   {
@@ -32,6 +35,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "album" */ '../views/Album.page.vue'),
     meta: {
       title: 'lxy&tsy | 相册',
+      requireAuth: true,
     },
   },
   {
@@ -50,6 +54,10 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  /* 该页面需要登录 */
+  if (to.meta.requireAuth) {
+  }
+
   /* 路由发生变化修改页面title */
   if (to.meta.title) {
     document.title = to.meta.title
