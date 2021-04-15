@@ -1,4 +1,4 @@
-import { createApp } from 'vue'
+import { createApp } from 'vue';
 import {
   Button,
   Picker,
@@ -6,22 +6,22 @@ import {
   Popup,
   Overlay,
   // Toast
-} from 'vant'
+} from 'vant';
 
-import App from './App.vue'
-import router from './router'
-import store from './store'
+import App from './App.vue';
+import router from './router';
+import store from './store';
 
-const app = createApp(App)
+const app = createApp(App);
 
-app.use(store)
-app.use(router)
+app.use(store);
+app.use(router);
 
-app.use(Button)
-app.use(Picker)
-app.use(Field)
-app.use(Popup)
-app.use(Overlay)
+app.use(Button);
+app.use(Picker);
+app.use(Field);
+app.use(Popup);
+app.use(Overlay);
 // app.use(Toast);
 
-app.mount('#app')
+app.mount('#app');

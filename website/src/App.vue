@@ -6,15 +6,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import MenuComponent from '@/components/MenuComponent.vue'
+import { defineComponent, provide, reactive } from 'vue';
+import MenuComponent from '@/components/MenuComponent.vue';
+import { UserInfoContext, initialUserInfo, USER_INFO_CONTEXT, SET_USER_INFO_CONTEXT } from '@/context';
 
 export default defineComponent({
   name: 'App',
   components: {
     MenuComponent,
   },
-})
+  setup() {
+    const userInfo = reactive(initialUserInfo);
+    // const isLogin = computed(() => userInfo.id !== initialUserInfo.id);
+
+    const setUserInfo = (_userInfo: UserInfoContext) => {
+      userInfo.id = _userInfo.id;
+      userInfo.name = _userInfo.name;
+      userInfo.gender = _userInfo.gender;
+    };
+
+    provide(USER_INFO_CONTEXT, userInfo);
+    provide(SET_USER_INFO_CONTEXT, setUserInfo);
+  },
+});
 </script>
 
 <style lang="scss" scoped>

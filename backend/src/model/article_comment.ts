@@ -1,5 +1,5 @@
-const { Model, DataTypes } = require('sequelize')
-const db = require('./db')
+import { Model, DataTypes } from 'sequelize'
+import * as db from './db'
 
 class ArticleComment extends Model {}
 
@@ -13,7 +13,7 @@ ArticleComment.init(
       type: DataTypes.INTEGER
     },
     content: {
-      type: DataTypes.Text
+      type: DataTypes.STRING
     },
     publish_time: {
       type: DataTypes.STRING
@@ -27,4 +27,4 @@ ArticleComment.init(
   }
 )
 
-module.exports = ArticleComment
+export default ArticleComment

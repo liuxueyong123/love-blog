@@ -1,5 +1,6 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import HomePage from '@/views/Home.page.vue'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import HomePage from '@/views/Home.page.vue';
+// import { useUserInfo } from '@/context';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -46,23 +47,26 @@ const routes: Array<RouteRecordRaw> = [
       title: 'lxy&tsy | 登录',
     },
   },
-]
+];
 
 const router = createRouter({
   history: createWebHistory('/page'),
   routes,
-})
+});
 
 router.beforeEach((to, from, next) => {
-  /* 该页面需要登录 */
-  if (to.meta.requireAuth) {
-  }
+  // /* 该页面需要登录 */
+  // if (to.meta.requireAuth) {
+  //   const { userInfo } = useUserInfo();
+  //   console.log(userInfo);
+  // }
 
   /* 路由发生变化修改页面title */
   if (to.meta.title) {
-    document.title = to.meta.title
+    document.title = to.meta.title;
   }
-  next()
-})
 
-export default router
+  next();
+});
+
+export default router;

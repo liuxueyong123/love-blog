@@ -50,10 +50,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
-import AvatarComponent from '@/components/AvatarComponent.vue'
-import GiveLikeComponent from '@/components/GiveLike.component.vue'
-import { GenderMap } from '@/utils'
+import { defineComponent, reactive } from 'vue';
+import AvatarComponent from '@/components/AvatarComponent.vue';
+import GiveLikeComponent from '@/components/GiveLike.component.vue';
+import { GenderMap } from '@/utils';
 
 const menuList = [
   {
@@ -72,7 +72,7 @@ const menuList = [
     name: 'Message',
     imgUrl: 'http://lxy520.top/images/homepage-menu-message.png',
   },
-]
+];
 
 const initialArticleList = [
   {
@@ -89,7 +89,7 @@ const initialArticleList = [
     gender: 2,
     publishTime: '2021/01/03 12:23:23',
   },
-]
+];
 
 const initialPostList = [
   {
@@ -108,7 +108,7 @@ const initialPostList = [
     iconNumber: 0,
     alreadyLike: false,
   },
-]
+];
 
 export default defineComponent({
   name: 'HomePage',
@@ -117,18 +117,18 @@ export default defineComponent({
     GiveLikeComponent,
   },
   setup() {
-    const articleList = reactive(initialArticleList)
-    const postList = reactive(new Map(initialPostList.map(x => [x.id, x])))
+    const articleList = reactive(initialArticleList);
+    const postList = reactive(new Map(initialPostList.map(x => [x.id, x])));
 
     const handleLikeClick = (id: number) => {
-      const item = postList.get(id)
+      const item = postList.get(id);
       if (!item) {
-        console.log('id 不存在')
-        return
+        console.log('id 不存在');
+        return;
       }
 
-      item.alreadyLike = !item.alreadyLike
-    }
+      item.alreadyLike = !item.alreadyLike;
+    };
 
     return {
       menuList,
@@ -136,9 +136,9 @@ export default defineComponent({
       postList,
       handleLikeClick,
       GenderMap,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

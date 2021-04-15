@@ -31,9 +31,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import AvatarComponent from '@/components/AvatarComponent.vue'
-import GiveLikeComponent from '@/components/GiveLike.component.vue'
+import { defineComponent } from 'vue';
+import AvatarComponent from '@/components/AvatarComponent.vue';
+import GiveLikeComponent from '@/components/GiveLike.component.vue';
 
 export default defineComponent({
   name: 'PostItemComponent',
@@ -41,7 +41,7 @@ export default defineComponent({
     AvatarComponent,
     GiveLikeComponent,
   },
-})
+});
 </script>
 
 <style scoped lang="scss">

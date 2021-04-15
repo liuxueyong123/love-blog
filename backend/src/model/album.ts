@@ -1,5 +1,5 @@
-const { Model, DataTypes } = require('sequelize')
-const db = require('./db')
+import { Model, DataTypes } from 'sequelize'
+import * as db from './db'
 
 class Album extends Model {}
 
@@ -33,4 +33,4 @@ Album.init(
   }
 )
 
-module.exports = Album
+export default Album

@@ -1,5 +1,5 @@
-const { Model, DataTypes } = require('sequelize')
-const db = require('./db')
+import { Model, DataTypes } from 'sequelize'
+import * as db from './db'
 
 class ArticleType extends Model {}
 
@@ -27,4 +27,4 @@ ArticleType.init(
   }
 )
 
-module.exports = ArticleType
+export default ArticleType

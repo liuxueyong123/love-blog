@@ -9,8 +9,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
-import AvatarComponent from '@/components/AvatarComponent.vue'
+import { defineComponent, PropType } from 'vue';
+import AvatarComponent from '@/components/AvatarComponent.vue';
 
 export default defineComponent({
   components: {
@@ -27,7 +27,7 @@ export default defineComponent({
       required: true,
     },
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

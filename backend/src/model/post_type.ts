@@ -1,5 +1,5 @@
-const { Model, DataTypes } = require('sequelize')
-const db = require('./db')
+import { Model, DataTypes } from 'sequelize'
+import * as db from './db'
 
 class PostType extends Model {}
 
@@ -27,4 +27,4 @@ PostType.init(
   }
 )
 
-module.exports = PostType
+export default PostType

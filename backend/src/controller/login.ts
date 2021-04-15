@@ -1,5 +1,6 @@
-const koaRouter = require('koa-joi-router')
-const UserModel = require('../model/user')
+import koaRouter from 'koa-joi-router'
+import UserModel from '../model/user'
+
 const Joi = koaRouter.Joi
 
 const router = koaRouter()
@@ -51,4 +52,4 @@ router.route({
   }
 })
 
-module.exports = router
+export default router

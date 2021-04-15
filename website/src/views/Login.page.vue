@@ -8,18 +8,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import { useRouter } from 'vue-router'
-import useAxios from '@/hooks/useAxios'
+import { defineComponent, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import useAxios from '@/hooks/useAxios';
 
 export default defineComponent({
   name: 'LoginPage',
   setup() {
-    const accountRef = ref('')
-    const passwordRef = ref('')
+    const accountRef = ref('');
+    const passwordRef = ref('');
 
-    const router = useRouter()
-    const axios = useAxios()
+    const router = useRouter();
+    const axios = useAxios();
 
     const submitLogin = async () => {
       await axios.request({
@@ -29,18 +29,18 @@ export default defineComponent({
           account: accountRef.value,
           password: passwordRef.value,
         },
-      })
+      });
 
-      router.push('/')
-    }
+      router.push('/');
+    };
 
     return {
       accountRef,
       passwordRef,
       submitLogin,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

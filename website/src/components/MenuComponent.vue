@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent } from 'vue';
 
 const menuList = [
   {
@@ -37,16 +37,16 @@ const menuList = [
     routes: ['AlbumPage'],
     to: 'AlbumPage',
   },
-]
+];
 
 export default defineComponent({
   name: 'MenuComponent',
   setup() {
     return {
       menuList,
-    }
+    };
   },
-})
+});
 </script>
 <style scoped lang="scss">
 @mixin mobile($fn, $padding) {

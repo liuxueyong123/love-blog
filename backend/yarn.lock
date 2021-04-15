@@ -115,6 +115,14 @@
     "@types/connect" "*"
     "@types/node" "*"
 
+"@types/co-body@*":
+  version "5.1.0"
+  resolved "https://registry.npm.taobao.org/@types/co-body/download/@types/co-body-5.1.0.tgz#69c505dd759d619a8c78b1a88222e63014c9f417"
+  integrity sha1-acUF3XWdYZqMeLGogiLmMBTJ9Bc=
+  dependencies:
+    "@types/node" "*"
+    "@types/qs" "*"
+
 "@types/connect@*":
   version "3.4.34"
   resolved "https://registry.npm.taobao.org/@types/connect/download/@types/connect-3.4.34.tgz?cache=0&sync_timestamp=1613378517796&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fconnect%2Fdownload%2F%40types%2Fconnect-3.4.34.tgz#170a40223a6d666006d93ca128af2beb1d9b1901"
@@ -185,6 +193,30 @@
   version "3.2.5"
   resolved "https://registry.npm.taobao.org/@types/koa-compose/download/@types/koa-compose-3.2.5.tgz#85eb2e80ac50be95f37ccf8c407c09bbe3468e9d"
   integrity sha1-hesugKxQvpXzfM+MQHwJu+NGjp0=
+  dependencies:
+    "@types/koa" "*"
+
+"@types/koa-joi-router@^5.2.5":
+  version "5.2.5"
+  resolved "https://registry.npm.taobao.org/@types/koa-joi-router/download/@types/koa-joi-router-5.2.5.tgz#e993bbd6d3c7adb9f1f030bd26490551257a206e"
+  integrity sha1-6ZO71tPHrbnx8DC9JkkFUSV6IG4=
+  dependencies:
+    "@types/co-body" "*"
+    "@types/koa" "*"
+    "@types/koa-router" "*"
+    joi "^17.3.0"
+
+"@types/koa-router@*":
+  version "7.4.2"
+  resolved "https://registry.npm.taobao.org/@types/koa-router/download/@types/koa-router-7.4.2.tgz#b12d7095e844f4d0081b32742691a4d2e5a8046a"
+  integrity sha1-sS1wlehE9NAIGzJ0JpGk0uWoBGo=
+  dependencies:
+    "@types/koa" "*"
+
+"@types/koa-send@^4.1.2":
+  version "4.1.2"
+  resolved "https://registry.npm.taobao.org/@types/koa-send/download/@types/koa-send-4.1.2.tgz#978f8267ad116d12ac6a18fecd8f34c5657e09ad"
+  integrity sha1-l4+CZ60RbRKsahj+zY80xWV+Ca0=
   dependencies:
     "@types/koa" "*"
 
@@ -1339,7 +1371,7 @@ isexe@^2.0.0:
   resolved "https://registry.npm.taobao.org/isexe/download/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=
 
-joi@^17.2.1:
+joi@^17.2.1, joi@^17.3.0:
   version "17.4.0"
   resolved "https://registry.npm.taobao.org/joi/download/joi-17.4.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fjoi%2Fdownload%2Fjoi-17.4.0.tgz#b5c2277c8519e016316e49ababd41a1908d9ef20"
   integrity sha1-tcInfIUZ4BYxbkmrq9QaGQjZ7yA=

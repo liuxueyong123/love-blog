@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType } from 'vue';
 
 export default defineComponent({
   name: 'GiveLikeComponent',
@@ -21,7 +21,7 @@ export default defineComponent({
     },
   },
   emits: ['handleClick'],
-})
+});
 </script>
 
 <style scoped lang="scss">

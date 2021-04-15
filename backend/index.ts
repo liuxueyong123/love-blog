@@ -1,7 +1,6 @@
 import Koa from 'koa'
-
-const { publicRouters, privateRouters } = require('./src/router/apiRouter')
-const viewRouter = require('./src/router/viewRouter.js')
+import { publicRouters, privateRouters } from './src/router/apiRouter'
+import viewRouter from './src/router/viewRouter'
 const app = new Koa()
 const port = 8081
 

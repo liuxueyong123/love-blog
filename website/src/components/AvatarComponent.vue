@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from 'vue'
+import { computed, defineComponent, PropType } from 'vue';
 
 export default defineComponent({
   name: 'AvatarComponent',
@@ -16,13 +16,13 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const avatarLink = computed(() => `http://lxy520.top/images/avatar-${props.gender}.png`)
+    const avatarLink = computed(() => `http://lxy520.top/images/avatar-${props.gender}.png`);
 
     return {
       avatarLink,
-    }
+    };
   },
-})
+});
 </script>
 <style scoped lang="scss">
 @mixin mobile($fn, $padding) {
