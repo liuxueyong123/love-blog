@@ -50,10 +50,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import { defineComponent, onMounted, reactive } from 'vue';
 import AvatarComponent from '@/components/AvatarComponent.vue';
 import GiveLikeComponent from '@/components/GiveLike.component.vue';
 import { GenderMap } from '@/utils';
+import useAxios from '@/hooks/useAxios';
 
 const menuList = [
   {
@@ -129,6 +130,14 @@ export default defineComponent({
 
       item.alreadyLike = !item.alreadyLike;
     };
+
+    const axios = useAxios();
+
+    onMounted(() => {
+      // axios.request({
+      //   url: '/user',
+      // });
+    });
 
     return {
       menuList,

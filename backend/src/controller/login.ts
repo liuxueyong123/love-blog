@@ -1,7 +1,5 @@
-import koaRouter from 'koa-joi-router'
+import koaRouter, { Joi } from 'koa-joi-router'
 import UserModel from '../model/user'
-
-const Joi = koaRouter.Joi
 
 const router = koaRouter()
 router.prefix('/api')
@@ -38,7 +36,7 @@ router.route({
       JSON.stringify({
         id: user.id,
         account: user.account,
-        name: escape(user.name),
+        name: encodeURIComponent(user.name),
         gender: user.gender
       }),
       {
@@ -48,7 +46,11 @@ router.route({
     )
 
     ctx.status = 200
-    ctx.body = {}
+    ctx.body = {
+      id: user.id,
+      name: user.name,
+      gender: user.gender
+    }
   }
 })
 

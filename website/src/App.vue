@@ -6,9 +6,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, provide, reactive } from 'vue';
+import { defineComponent, onMounted, provide, reactive } from 'vue';
 import MenuComponent from '@/components/MenuComponent.vue';
-import { UserInfoContext, initialUserInfo, USER_INFO_CONTEXT, SET_USER_INFO_CONTEXT } from '@/context';
+import {
+  UserInfoContext,
+  SetUserInfoContext,
+  initialUserInfo,
+  USER_INFO_CONTEXT,
+  SET_USER_INFO_CONTEXT,
+} from '@/context';
+import useAxios from '@/hooks/useAxios';
+import { whiteRouteList } from '@/router';
 
 export default defineComponent({
   name: 'App',
@@ -16,10 +24,8 @@ export default defineComponent({
     MenuComponent,
   },
   setup() {
-    const userInfo = reactive(initialUserInfo);
-    // const isLogin = computed(() => userInfo.id !== initialUserInfo.id);
-
-    const setUserInfo = (_userInfo: UserInfoContext) => {
+    const userInfo: UserInfoContext = reactive(initialUserInfo);
+    const setUserInfo: SetUserInfoContext = (_userInfo: UserInfoContext) => {
       userInfo.id = _userInfo.id;
       userInfo.name = _userInfo.name;
       userInfo.gender = _userInfo.gender;
@@ -27,6 +33,21 @@ export default defineComponent({
 
     provide(USER_INFO_CONTEXT, userInfo);
     provide(SET_USER_INFO_CONTEXT, setUserInfo);
+
+    const axios = useAxios();
+
+    onMounted(async () => {
+      if (whiteRouteList.includes(location.pathname)) {
+        return;
+      }
+
+      const userRes = await axios.request({
+        url: '/userInfo',
+        method: 'get',
+      });
+
+      setUserInfo(userRes.data);
+    });
   },
 });
 </script>
@@ -64,13 +85,13 @@ export default defineComponent({
       margin: 0 auto;
     }
   }
-}
 
-@media screen and (min-width: 500px) {
-  #layout {
-    border-left: 1px solid #e6f3fe;
-    border-right: 1px solid #e6f3fe;
-    padding-top: ipadPx2vw(20);
+  @media screen and (min-width: 500px) {
+    #layout {
+      border-left: 1px solid #e6f3fe;
+      border-right: 1px solid #e6f3fe;
+      padding-top: call($fn, 20);
+    }
   }
 }
 

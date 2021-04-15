@@ -2,10 +2,20 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import HomePage from '@/views/Home.page.vue';
 // import { useUserInfo } from '@/context';
 
+export enum MyRouterList {
+  HomePage = 'HomePage',
+  ArticlePage = 'ArticlePage',
+  PostPage = 'PostPage',
+  AlbumPage = 'AlbumPage',
+  LoginPage = 'LoginPage',
+}
+
+export const whiteRouteList = ['/page/login'];
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'HomePage',
+    name: MyRouterList.HomePage,
     component: HomePage,
     meta: {
       title: 'lxy&tsy | 首页',
@@ -14,7 +24,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/article',
-    name: 'ArticlePage',
+    name: MyRouterList.ArticlePage,
     component: () => import(/* webpackChunkName: "article" */ '../views/Article.page.vue'),
     meta: {
       title: 'lxy&tsy | 文章',
@@ -23,7 +33,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/post',
-    name: 'PostPage',
+    name: MyRouterList.PostPage,
     component: () => import(/* webpackChunkName: "post" */ '../views/post/Post.page.vue'),
     meta: {
       title: 'lxy&tsy | 帖子',
@@ -32,7 +42,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/album',
-    name: 'AlbumPage',
+    name: MyRouterList.AlbumPage,
     component: () => import(/* webpackChunkName: "album" */ '../views/Album.page.vue'),
     meta: {
       title: 'lxy&tsy | 相册',
@@ -41,10 +51,11 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/login',
-    name: 'LoginPage',
+    name: MyRouterList.LoginPage,
     component: () => import(/* webpackChunkName: "login" */ '../views/Login.page.vue'),
     meta: {
       title: 'lxy&tsy | 登录',
+      requireAuth: false,
     },
   },
 ];

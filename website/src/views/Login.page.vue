@@ -11,6 +11,7 @@
 import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import useAxios from '@/hooks/useAxios';
+import { useUserInfo } from '@/context';
 
 export default defineComponent({
   name: 'LoginPage',
@@ -20,9 +21,10 @@ export default defineComponent({
 
     const router = useRouter();
     const axios = useAxios();
+    const { setUserInfo } = useUserInfo();
 
     const submitLogin = async () => {
-      await axios.request({
+      const res = await axios.request({
         url: '/login',
         method: 'post',
         data: {
@@ -31,6 +33,7 @@ export default defineComponent({
         },
       });
 
+      setUserInfo(res.data);
       router.push('/');
     };
 

@@ -1,6 +1,8 @@
 import Koa from 'koa'
 import { publicRouters, privateRouters } from './src/router/apiRouter'
 import viewRouter from './src/router/viewRouter'
+import authMiddleWare from './src/middlewares/auth'
+
 const app = new Koa()
 const port = 8081
 
@@ -16,17 +18,7 @@ app
   })
   .use(viewRouter.routes())
   .use(publicRouters)
-  .use(async (ctx, next) => {
-    const cookie = ctx.cookies.get('lxyAndTsy') as string
-    try {
-      const parsedCookie = JSON.parse(cookie)
-      console.log(parsedCookie)
-    } catch {}
-
-    ctx.status = 401
-    ctx.body = {}
-    // await next()
-  })
+  .use(authMiddleWare)
   .use(privateRouters)
 
 app.listen(port, async () => {

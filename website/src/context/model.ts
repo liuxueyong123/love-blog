@@ -3,3 +3,5 @@ export interface UserInfoContext {
   name: string;
   gender: number;
 }
+
+export type SetUserInfoContext = (_userInfo: UserInfoContext) => void;

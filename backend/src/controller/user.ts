@@ -1,16 +1,13 @@
 import koaRouter from 'koa-joi-router'
-import UserModel from '../model/user'
 
 const router = koaRouter()
 router.prefix('/api')
 
 router.route({
   method: 'get',
-  path: '/user',
+  path: '/userInfo',
   handler: async (ctx) => {
-    const users = await UserModel.findAll()
-
-    ctx.body = users
+    ctx.body = ctx.state.user
     ctx.status = 200
   }
 })

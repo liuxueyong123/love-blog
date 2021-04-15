@@ -26,7 +26,7 @@ const initInterceptors = () => {
     },
     error => {
       if (error.response.status === 401) {
-        location.href = location.host + '/page/login';
+        location.href = 'http://' + location.host + '/page/login';
       }
 
       const message = error.response.data.error || 'Opps...';

@@ -4,8 +4,8 @@ import path from 'path'
 
 const router = new Router()
 
-router.get('/page/(.*)', (ctx) => {
-  send(ctx, path.resolve('../website/dist/index.html'), { root: '/' })
+router.get('/page/(.*)', async (ctx) => {
+  await send(ctx, path.resolve('../website/dist/index.html'), { root: '/' })
 })
 
 export default router

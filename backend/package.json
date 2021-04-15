@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --watch '*' -e ts,tsx --exec 'ts-node' ./index.ts"
+    "start": "nodemon --delay 500ms --watch '*' -e ts,tsx --exec 'ts-node' ./index.ts",
+    "start:prod": "nohup ts-node ./index.ts &"
   },
   "keywords": [],
   "author": "",
