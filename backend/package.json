@@ -6,8 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon --delay 500ms --watch '*' -e ts,tsx --exec 'ts-node' ./index.ts",
-    "pm2": "sudo pm2 start ts-node index.ts --name app -i 5 --interpreter ./node_modules/.bin/ts-node",
-    "start:prod": "nohup ts-node ./index.ts &"
+    "pm2": "pm2 start ./dist/index.js -n love_blog"
   },
   "keywords": [],
   "author": "",
