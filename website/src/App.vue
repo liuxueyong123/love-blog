@@ -47,6 +47,8 @@ export default defineComponent({
       });
 
       setUserInfo(userRes.data);
+
+      console.log('app.vue', userInfo);
     });
   },
 });

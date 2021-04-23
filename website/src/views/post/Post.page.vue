@@ -184,22 +184,20 @@ export default defineComponent({
         border: 1px solid #e1e1e2;
         box-shadow: 0 1px 2px #e1e1e2;
 
-        &::v-deep {
-          .van-cell__title {
-            width: 40%;
-            margin-right: 0;
+        &::v-deep(.van-cell__title) {
+          width: 40%;
+          margin-right: 0;
 
-            .span {
-              color: $lightTextColor;
-              font-size: call($fn, 12);
-            }
+          .span {
+            color: $lightTextColor;
+            font-size: call($fn, 12);
           }
+        }
 
-          .van-cell__value {
-            .van-field__control {
-              color: $textColor;
-              font-size: call($fn, 14);
-            }
+        &::v-deep(.van-cell__value) {
+          .van-field__control {
+            color: $textColor;
+            font-size: call($fn, 14);
           }
         }
       }

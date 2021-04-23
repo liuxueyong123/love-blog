@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import HomePage from '@/views/Home.page.vue';
-// import { useUserInfo } from '@/context';
 
 export enum MyRouterList {
   HomePage = 'HomePage',
@@ -68,8 +67,6 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   // /* 该页面需要登录 */
   // if (to.meta.requireAuth) {
-  //   const { userInfo } = useUserInfo();
-  //   console.log(userInfo);
   // }
 
   /* 路由发生变化修改页面title */

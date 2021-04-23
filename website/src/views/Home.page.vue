@@ -2,10 +2,10 @@
   <div class="home-page">
     <header>
       <div class="name-wrapper">
-        <div class="name">Hi, Sayyeah°</div>
-        <div class="greet">Good Morning!</div>
+        <div class="name">Hi, {{ userName }}</div>
+        <div class="greet">Good {{ greeting }}!</div>
       </div>
-      <AvatarComponent class="avatar" gender="female" />
+      <AvatarComponent class="avatar" :gender="userGender" />
     </header>
 
     <img class="banner-image" src="http://lxy520.top/images/homepage-banner-1.png" />
@@ -53,8 +53,9 @@
 import { defineComponent, onMounted, reactive } from 'vue';
 import AvatarComponent from '@/components/AvatarComponent.vue';
 import GiveLikeComponent from '@/components/GiveLike.component.vue';
-import { GenderMap } from '@/utils';
-import useAxios from '@/hooks/useAxios';
+import { GenderMap, greeting } from '@/utils';
+import { useUserInfo } from '@/context';
+// import useAxios from '@/hooks/useAxios';
 
 const menuList = [
   {
@@ -121,6 +122,8 @@ export default defineComponent({
     const articleList = reactive(initialArticleList);
     const postList = reactive(new Map(initialPostList.map(x => [x.id, x])));
 
+    const { userName, userGender } = useUserInfo();
+
     const handleLikeClick = (id: number) => {
       const item = postList.get(id);
       if (!item) {
@@ -131,7 +134,7 @@ export default defineComponent({
       item.alreadyLike = !item.alreadyLike;
     };
 
-    const axios = useAxios();
+    // const axios = useAxios();
 
     onMounted(() => {
       // axios.request({
@@ -144,7 +147,10 @@ export default defineComponent({
       articleList,
       postList,
       handleLikeClick,
+      userName,
+      userGender,
       GenderMap,
+      greeting,
     };
   },
 });

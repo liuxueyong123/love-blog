@@ -11,7 +11,7 @@ export default defineComponent({
   name: 'AvatarComponent',
   props: {
     gender: {
-      type: String as PropType<string>,
+      type: String as PropType<'male' | 'female'>,
       required: true,
     },
   },
