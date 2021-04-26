@@ -1,14 +1,14 @@
 import { Model, DataTypes } from 'sequelize'
 import * as db from './db'
 
-class User extends Model {
+class UserModel extends Model {
   id!: string
   account!: string
   name!: string
   gender!: number
 }
 
-User.init(
+UserModel.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -32,4 +32,4 @@ User.init(
   }
 )
 
-export default User
+export default UserModel

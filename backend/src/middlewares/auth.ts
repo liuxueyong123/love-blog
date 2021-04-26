@@ -1,13 +1,11 @@
 import { Context, Next } from 'koa'
+import * as exception from '../extension/exception'
 
 const authMiddleWare = async (ctx: Context, next: Next) => {
   const cookie = ctx.cookies.get('lxyAndTsy')
 
   if (!cookie) {
-    ctx.status = 401
-    ctx.body = {
-      error: 'Not login yet!'
-    }
+    exception.notLogin(ctx)
     return
   }
 

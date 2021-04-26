@@ -12,10 +12,10 @@
 
     <div class="section-title">Menu</div>
     <div class="menu-wrapper">
-      <div class="menu-item" v-for="(item, index) in menuList" :key="index">
+      <router-link class="menu-item" v-for="(item, index) in menuList" :key="index" :to="{ name: item.routeName }">
         <img class="item-image" :src="item.imgUrl" />
         <div class="item-title">{{ item.name }}</div>
-      </div>
+      </router-link>
     </div>
 
     <div class="section-title">Recent Articles</div>
@@ -25,7 +25,7 @@
         <div class="item-right">
           <div class="item-name">{{ item.articleName }}</div>
           <div class="item-writer-info">
-            <AvatarComponent class="writer-avatar" :gender="GenderMap[item.gender]" />
+            <AvatarComponent class="writer-avatar" :gender="GenderList[item.gender]" />
             <div class="writer-name">{{ item.userName }}</div>
           </div>
           <div class="item-time">{{ item.publishTime }}</div>
@@ -36,12 +36,12 @@
     <div class="section-title">Recent Posts</div>
     <div class="post-wrapper">
       <div class="post-item" v-for="item in postList.values()" :key="item.id">
-        <AvatarComponent class="item-avatar" :gender="GenderMap[item.gender]" />
+        <AvatarComponent class="item-avatar" :gender="GenderList[item.gender]" />
         <div class="item-name">{{ item.userName }}</div>
         <div class="item-content">{{ item.articleContent }}</div>
         <GiveLikeComponent
           :alreadyLike="item.alreadyLike"
-          :likeCount="item.iconNumber"
+          :likeCount="item.postLikes"
           @handleClick="handleLikeClick(item.id)"
         />
       </div>
@@ -50,28 +50,42 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive } from 'vue';
+import { defineComponent, onMounted, reactive, ref } from 'vue';
 import AvatarComponent from '@/components/AvatarComponent.vue';
 import GiveLikeComponent from '@/components/GiveLike.component.vue';
-import { GenderMap, greeting } from '@/utils';
+import { GenderList, MyRouterList, getRecentPostApi, postTogglePostLikeApi } from '@/constants';
+import { greeting } from '@/utils';
 import { useUserInfo } from '@/context';
-// import useAxios from '@/hooks/useAxios';
+import useAxios from '@/hooks/useAxios';
+
+interface PostItem {
+  gender: number;
+  userName: string;
+  articleContent: string;
+  postLikes: number;
+  alreadyLike: boolean;
+  id: number;
+}
 
 const menuList = [
   {
     name: 'Article',
+    routeName: MyRouterList.ArticlePage,
     imgUrl: 'http://lxy520.top/images/homepage-menu-article.png',
   },
   {
     name: 'Post',
+    routeName: MyRouterList.PostPage,
     imgUrl: 'http://lxy520.top/images/homepage-menu-post.png',
   },
   {
     name: 'Album',
+    routeName: MyRouterList.AlbumPage,
     imgUrl: 'http://lxy520.top/images/homepage-menu-album.png',
   },
   {
     name: 'Message',
+    routeName: MyRouterList.HomePage,
     imgUrl: 'http://lxy520.top/images/homepage-menu-message.png',
   },
 ];
@@ -93,24 +107,7 @@ const initialArticleList = [
   },
 ];
 
-const initialPostList = [
-  {
-    gender: 1,
-    userName: 'Liu Xueyong',
-    articleContent: '这是一篇test的东西得分，这是一篇test的东西,这是一篇test的东西',
-    iconNumber: 1,
-    alreadyLike: true,
-    id: 1,
-  },
-  {
-    id: 2,
-    gender: 2,
-    userName: 'Siying',
-    articleContent: '这是一篇test的东西得分，这是一篇test的东西,这是一篇test的东西',
-    iconNumber: 0,
-    alreadyLike: false,
-  },
-];
+const initialPostList: PostItem[] = [];
 
 export default defineComponent({
   name: 'HomePage',
@@ -120,26 +117,39 @@ export default defineComponent({
   },
   setup() {
     const articleList = reactive(initialArticleList);
-    const postList = reactive(new Map(initialPostList.map(x => [x.id, x])));
+    const postList = ref(new Map(initialPostList.map(x => [x.id, x])));
 
     const { userName, userGender } = useUserInfo();
+    const axios = useAxios();
 
-    const handleLikeClick = (id: number) => {
-      const item = postList.get(id);
+    const handleLikeClick = async (id: number) => {
+      const item = postList.value.get(id);
       if (!item) {
         console.log('id 不存在');
         return;
       }
 
+      item.alreadyLike ? item.postLikes-- : item.postLikes++;
       item.alreadyLike = !item.alreadyLike;
+
+      try {
+        await axios.request({
+          ...postTogglePostLikeApi,
+          data: {
+            postId: id,
+          },
+        });
+      } catch (e) {
+        item.alreadyLike = !item.alreadyLike;
+        item.alreadyLike ? item.postLikes++ : item.postLikes--;
+      }
     };
 
-    // const axios = useAxios();
+    onMounted(async () => {
+      const postListRes = await axios.request(getRecentPostApi);
 
-    onMounted(() => {
-      // axios.request({
-      //   url: '/user',
-      // });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      postList.value = new Map(postListRes.data.map((x: any) => [x.id, x]));
     });
 
     return {
@@ -149,7 +159,7 @@ export default defineComponent({
       handleLikeClick,
       userName,
       userGender,
-      GenderMap,
+      GenderList,
       greeting,
     };
   },

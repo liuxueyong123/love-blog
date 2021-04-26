@@ -1,13 +1,14 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import HomePage from '@/views/Home.page.vue';
+import { MyRouterList } from '@/constants';
 
-export enum MyRouterList {
-  HomePage = 'HomePage',
-  ArticlePage = 'ArticlePage',
-  PostPage = 'PostPage',
-  AlbumPage = 'AlbumPage',
-  LoginPage = 'LoginPage',
-}
+// export const MyRouterList = {
+//   HomePage: 'HomePage',
+//   ArticlePage: 'ArticlePage',
+//   PostPage: 'PostPage',
+//   AlbumPage: 'AlbumPage',
+//   LoginPage: 'LoginPage',
+// };
 
 export const whiteRouteList = ['/page/login'];
 
@@ -16,8 +17,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/',
     name: MyRouterList.HomePage,
     component: HomePage,
+    // component: () => import(/* webpackChunkName: "home" */ '../views/Home.page.vue'),
     meta: {
-      title: 'lxy&tsy | 首页',
+      // title: 'lxy&tsy | 首页',
+      title: 'demo',
       requireAuth: true,
     },
   },
@@ -26,7 +29,8 @@ const routes: Array<RouteRecordRaw> = [
     name: MyRouterList.ArticlePage,
     component: () => import(/* webpackChunkName: "article" */ '../views/Article.page.vue'),
     meta: {
-      title: 'lxy&tsy | 文章',
+      // title: 'lxy&tsy | 文章',
+      title: 'demo',
       requireAuth: true,
     },
   },
@@ -35,7 +39,8 @@ const routes: Array<RouteRecordRaw> = [
     name: MyRouterList.PostPage,
     component: () => import(/* webpackChunkName: "post" */ '../views/post/Post.page.vue'),
     meta: {
-      title: 'lxy&tsy | 帖子',
+      // title: 'lxy&tsy | 帖子',
+      title: 'demo',
       requireAuth: true,
     },
   },
@@ -44,7 +49,8 @@ const routes: Array<RouteRecordRaw> = [
     name: MyRouterList.AlbumPage,
     component: () => import(/* webpackChunkName: "album" */ '../views/Album.page.vue'),
     meta: {
-      title: 'lxy&tsy | 相册',
+      // title: 'lxy&tsy | 相册',
+      title: 'demo',
       requireAuth: true,
     },
   },
@@ -53,7 +59,8 @@ const routes: Array<RouteRecordRaw> = [
     name: MyRouterList.LoginPage,
     component: () => import(/* webpackChunkName: "login" */ '../views/Login.page.vue'),
     meta: {
-      title: 'lxy&tsy | 登录',
+      // title: 'lxy&tsy | 登录',
+      title: 'demo',
       requireAuth: false,
     },
   },

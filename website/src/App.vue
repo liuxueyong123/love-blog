@@ -17,6 +17,7 @@ import {
 } from '@/context';
 import useAxios from '@/hooks/useAxios';
 import { whiteRouteList } from '@/router';
+import { getUserInfoApi } from '@/constants';
 
 export default defineComponent({
   name: 'App',
@@ -41,14 +42,9 @@ export default defineComponent({
         return;
       }
 
-      const userRes = await axios.request({
-        url: '/userInfo',
-        method: 'get',
-      });
+      const userRes = await axios.request(getUserInfoApi);
 
       setUserInfo(userRes.data);
-
-      console.log('app.vue', userInfo);
     });
   },
 });

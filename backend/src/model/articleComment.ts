@@ -1,42 +1,37 @@
 import { Model, DataTypes } from 'sequelize'
 import * as db from './db'
 
-class ArticleModel extends Model {
+class ArticleCommentModel extends Model {
   id!: number
-  publisherId!: number
+  articleId!: number
   content!: string
   publishTime!: string
-  typeId!: number
 }
 
-ArticleModel.init(
+ArticleCommentModel.init(
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true
     },
-    publisherId: {
+    articleId: {
       type: DataTypes.INTEGER,
-      field: 'publisher_id'
+      field: 'article_id'
     },
     content: {
-      type: DataTypes.TEXT
+      type: DataTypes.STRING
     },
     publishTime: {
       type: DataTypes.STRING,
       field: 'publish_time'
-    },
-    typeId: {
-      type: DataTypes.INTEGER,
-      field: 'type_id'
     }
   },
   {
-    modelName: 'article',
-    tableName: 'article',
+    modelName: 'articleComment',
+    tableName: 'article_comment',
     timestamps: false,
     sequelize: db.loveBlog
   }
 )
 
-export default ArticleModel
+export default ArticleCommentModel

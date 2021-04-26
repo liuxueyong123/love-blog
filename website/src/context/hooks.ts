@@ -1,7 +1,7 @@
 import { inject, computed } from 'vue';
 import { USER_INFO_CONTEXT, SET_USER_INFO_CONTEXT } from './constant';
 import { UserInfoContext, SetUserInfoContext } from './model';
-import { GenderMap } from '@/utils';
+import { GenderList } from '@/constants';
 
 export const useUserInfo = () => {
   const userInfo: UserInfoContext | undefined = inject(USER_INFO_CONTEXT);
@@ -15,12 +15,14 @@ export const useUserInfo = () => {
     throw new Error('setUserInfo can only be used under App!');
   }
 
-  const userGender = computed(() => GenderMap[userInfo.gender] || 'female');
+  const userGender = computed(() => GenderList[userInfo.gender] || 'female');
   const userName = computed(() => userInfo.name);
+  const userId = computed(() => userInfo.id);
 
   return {
+    userId,
+    userName,
     userGender,
     setUserInfo,
-    userName,
   };
 };

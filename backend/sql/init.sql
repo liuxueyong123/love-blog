@@ -27,7 +27,7 @@ CREATE TABLE `post` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `publisher_id` int  NOT NULL,
   `content` text  NOT NULL,
-  `publish_time` varchar(255) DEFAULT '',
+  `publish_time` TIMESTAMP not null,
   `type_id` int NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

@@ -1,28 +1,39 @@
 import { Model, DataTypes } from 'sequelize'
 import * as db from './db'
 
-class Album extends Model {}
+class AlbumModel extends Model {
+  id!: number
+  imageLink!: string
+  pictureTime!: string
+  description!: string
+  typeId!: number
+  uploadAccountId!: number
+}
 
-Album.init(
+AlbumModel.init(
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true
     },
-    image_link: {
-      type: DataTypes.STRING
+    imageLink: {
+      type: DataTypes.STRING,
+      field: 'image_link'
     },
-    picture_time: {
-      type: DataTypes.STRING
+    pictureTime: {
+      type: DataTypes.STRING,
+      field: 'picture_time'
     },
     description: {
       type: DataTypes.STRING
     },
-    type_id: {
-      type: DataTypes.INTEGER
+    typeId: {
+      type: DataTypes.INTEGER,
+      field: 'type_id'
     },
-    upload_account_id: {
-      type: DataTypes.INTEGER
+    uploadAccountId: {
+      type: DataTypes.INTEGER,
+      field: 'upload_account_id'
     }
   },
   {
@@ -33,4 +44,4 @@ Album.init(
   }
 )
 
-export default Album
+export default AlbumModel

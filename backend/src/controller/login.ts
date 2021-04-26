@@ -1,5 +1,6 @@
 import koaRouter, { Joi } from 'koa-joi-router'
-import UserModel from '../model/user'
+import * as exception from '../extension/exception'
+import { getUserByPassword } from '../service/user'
 
 const router = koaRouter()
 router.prefix('/api')
@@ -16,18 +17,10 @@ router.route({
   },
   handler: async (ctx) => {
     const { account, password } = ctx.request.body
-    const user = await UserModel.findOne({
-      where: {
-        account,
-        password
-      }
-    })
+    const user = await getUserByPassword(account, password)
 
     if (!user) {
-      ctx.status = 400
-      ctx.body = {
-        error: 'Account and password is not matched'
-      }
+      exception.wrongPassword(ctx)
       return
     }
 

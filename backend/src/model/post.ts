@@ -1,25 +1,40 @@
-import { Model, DataTypes } from 'sequelize'
+import { Model, DataTypes, NOW } from 'sequelize'
 import * as db from './db'
+import UserModel from './user'
+import PostLikeModel from './postLike'
 
-class Post extends Model {}
+class PostModel extends Model {
+  id!: number
+  publisherId!: number
+  content!: string
+  publishTime!: string
+  typeId!: number
+  user?: UserModel
+  postLikes?: PostLikeModel[]
+}
 
-Post.init(
+PostModel.init(
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true
     },
-    publisher_id: {
-      type: DataTypes.INTEGER
+    publisherId: {
+      type: DataTypes.INTEGER,
+      field: 'publisher_id'
     },
     content: {
       type: DataTypes.TEXT
     },
-    publish_time: {
-      type: DataTypes.STRING
+    publishTime: {
+      type: DataTypes.TIME,
+      field: 'publish_time',
+      allowNull: false,
+      defaultValue: NOW
     },
-    type_id: {
-      type: DataTypes.INTEGER
+    typeId: {
+      type: DataTypes.INTEGER,
+      field: 'type_id'
     }
   },
   {
@@ -30,4 +45,7 @@ Post.init(
   }
 )
 
-export default Post
+PostModel.belongsTo(UserModel, { foreignKey: 'publisherId' })
+PostModel.hasMany(PostLikeModel, { foreignKey: 'postId' })
+
+export default PostModel
