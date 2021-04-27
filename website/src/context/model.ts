@@ -4,4 +4,4 @@ export interface UserInfoContext {
   gender: number;
 }
 
-export type SetUserInfoContext = (_userInfo: UserInfoContext) => void;
+export type SetUserInfoContext = (userInfo: UserInfoContext) => void;

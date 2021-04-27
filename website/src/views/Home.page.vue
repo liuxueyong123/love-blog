@@ -21,9 +21,9 @@
     <div class="section-title">Recent Articles</div>
     <div class="article-wrapper">
       <div class="article-item" v-for="(item, index) in articleList" :key="index">
-        <img class="item-image" :src="item.imgUrl" />
+        <img class="item-image" :src="`http://lxy520.top/images/article-icon-${index + 1}.png`" />
         <div class="item-right">
-          <div class="item-name">{{ item.articleName }}</div>
+          <div class="item-name">{{ item.title }}</div>
           <div class="item-writer-info">
             <AvatarComponent class="writer-avatar" :gender="GenderList[item.gender]" />
             <div class="writer-name">{{ item.userName }}</div>
@@ -50,10 +50,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, ref } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import AvatarComponent from '@/components/AvatarComponent.vue';
 import GiveLikeComponent from '@/components/GiveLike.component.vue';
-import { GenderList, MyRouterList, getRecentPostApi, postTogglePostLikeApi } from '@/constants';
+import { GenderList, MyRouterList, getRecentPostApi, postTogglePostLikeApi, getRecentArticleApi } from '@/constants';
 import { greeting } from '@/utils';
 import { useUserInfo } from '@/context';
 import useAxios from '@/hooks/useAxios';
@@ -116,7 +116,7 @@ export default defineComponent({
     GiveLikeComponent,
   },
   setup() {
-    const articleList = reactive(initialArticleList);
+    const articleList = ref(initialArticleList);
     const postList = ref(new Map(initialPostList.map(x => [x.id, x])));
 
     const { userName, userGender } = useUserInfo();
@@ -147,9 +147,11 @@ export default defineComponent({
 
     onMounted(async () => {
       const postListRes = await axios.request(getRecentPostApi);
+      const articleListRes = await axios.request(getRecentArticleApi);
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       postList.value = new Map(postListRes.data.map((x: any) => [x.id, x]));
+      articleList.value = articleListRes.data;
     });
 
     return {

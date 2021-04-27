@@ -15,9 +15,9 @@ export const useUserInfo = () => {
     throw new Error('setUserInfo can only be used under App!');
   }
 
-  const userGender = computed(() => GenderList[userInfo.gender] || 'female');
-  const userName = computed(() => userInfo.name);
   const userId = computed(() => userInfo.id);
+  const userName = computed(() => userInfo.name);
+  const userGender = computed(() => GenderList[userInfo.gender] || 'female');
 
   return {
     userId,

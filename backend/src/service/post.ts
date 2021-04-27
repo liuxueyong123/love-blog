@@ -34,6 +34,7 @@ export const getRecentPost = async (userId: number) => {
   return res
 }
 
+// 切换博客喜欢状态
 export const togglePostLike = async (postId: number, userId: number) => {
   const likeRes = await PostLikeModel.findOne({
     where: {

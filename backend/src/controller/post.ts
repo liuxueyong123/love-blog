@@ -4,6 +4,7 @@ import { getRecentPost, togglePostLike } from '../service/post'
 const router = koaRouter()
 router.prefix('/api/post')
 
+// 获取首页最近博客
 router.route({
   method: 'get',
   path: '/recent',
@@ -14,6 +15,7 @@ router.route({
   }
 })
 
+// 切换博客喜欢状态
 router.route({
   method: 'post',
   path: '/toggle-like',

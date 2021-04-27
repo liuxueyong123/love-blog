@@ -5,6 +5,7 @@ import { getUserByPassword } from '../service/user'
 const router = koaRouter()
 router.prefix('/api')
 
+// 提交登录
 router.route({
   method: 'post',
   path: '/login',

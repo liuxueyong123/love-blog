@@ -14,3 +14,8 @@ export const postTogglePostLikeApi: AxiosRequestConfig = {
   url: '/post/toggle-like',
   method: 'post',
 };
+
+export const getRecentArticleApi: AxiosRequestConfig = {
+  url: '/article/recent',
+  method: 'get',
+};
