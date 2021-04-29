@@ -19,3 +19,8 @@ export const getRecentArticleApi: AxiosRequestConfig = {
   url: '/article/recent',
   method: 'get',
 };
+
+export const getPostsApi: AxiosRequestConfig = {
+  url: '/post/posts',
+  method: 'get',
+};

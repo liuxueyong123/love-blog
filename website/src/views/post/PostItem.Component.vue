@@ -1,27 +1,27 @@
 <template>
   <section class="post-item-component">
     <div class="post-header">
-      <AvatarComponent class="avatar" gender="female" />
+      <AvatarComponent class="avatar" :gender="gender" />
       <div class="right">
-        <div class="name">Sayyeah°</div>
-        <div class="date">2021/03/31 10:56</div>
+        <div class="name">{{ post.writer }}</div>
+        <div class="date">{{ publishTime }}</div>
       </div>
     </div>
     <div class="post-content">
-      具体内容见：其中现有页面问题及页面逻辑问题需要一起调整，如调整过程中有问题可以在相应页面备注
+      {{ post.content }}
     </div>
     <div class="post-comment-wrapper">
-      <div class="comment-item">
-        <span class="name">Sayyeah°：</span>
-        <span class="comment">这是我的评论～这是我的评论～这是我的评论～这是我的评论～</span>
-      </div>
-      <div class="comment-item">
-        <span class="name">Sayyeah°：</span>
-        <span class="comment">这是我的评论～这是我的评论～这是我的评论～这是我的评论～</span>
+      <div class="comment-item" v-for="(item, index) in post.postComments" :key="index">
+        <span class="name">{{ item.writer }}：</span>
+        <span class="comment">{{ item.content }}</span>
       </div>
     </div>
     <div class="post-handler-wrapper">
-      <GiveLikeComponent :alreadyLike="alreadyLike" :likeCount="iconNumber" @handleClick="handleLikeClick(id)" />
+      <GiveLikeComponent
+        :alreadyLike="post.alreadyLike"
+        :likeCount="post.postLikes"
+        @handleClick="$emit('handleClick')"
+      />
       <div class="right">
         <input type="text" class="comment-input" placeholder="Write a comment..." />
         <div class="post-icon"></div>
@@ -31,15 +31,49 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType, computed } from 'vue';
+import moment from 'moment';
 import AvatarComponent from '@/components/AvatarComponent.vue';
 import GiveLikeComponent from '@/components/GiveLike.component.vue';
+import { GenderList } from '@/constants';
+
+interface PostCommentItem {
+  content: string;
+  writer: string;
+}
+
+export interface Post {
+  id: number;
+  gender: number;
+  writer: string;
+  publishTime: string;
+  content: string;
+  postLikes: number;
+  alreadyLike: boolean;
+  postComments: PostCommentItem[];
+}
 
 export default defineComponent({
   name: 'PostItemComponent',
   components: {
     AvatarComponent,
     GiveLikeComponent,
+  },
+  props: {
+    post: {
+      type: Object as PropType<Post>,
+      required: true,
+    },
+  },
+  emits: ['handleClick'],
+  setup(props) {
+    const publishTime = computed(() => moment(props.post.publishTime).format('YYYY-MM-DD HH:mm'));
+    const gender = computed(() => GenderList[props.post.gender]);
+
+    return {
+      gender,
+      publishTime,
+    };
   },
 });
 </script>

@@ -2,6 +2,8 @@ import { Model, DataTypes, NOW } from 'sequelize'
 import * as db from './db'
 import UserModel from './user'
 import PostLikeModel from './postLike'
+import PostCommentModel from './postComment'
+import PostTypeModel from './postType'
 
 class PostModel extends Model {
   id!: number
@@ -11,6 +13,7 @@ class PostModel extends Model {
   typeId!: number
   user?: UserModel
   postLikes?: PostLikeModel[]
+  postComments?: PostCommentModel[]
 }
 
 PostModel.init(
@@ -47,5 +50,7 @@ PostModel.init(
 
 PostModel.belongsTo(UserModel, { foreignKey: 'publisherId' })
 PostModel.hasMany(PostLikeModel, { foreignKey: 'postId' })
+PostModel.hasMany(PostCommentModel, { foreignKey: 'postId' })
+PostModel.belongsTo(PostTypeModel, { foreignKey: 'typeId' })
 
 export default PostModel

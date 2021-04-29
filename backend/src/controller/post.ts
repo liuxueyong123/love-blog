@@ -1,5 +1,5 @@
 import koaRouter, { Joi } from 'koa-joi-router'
-import { getRecentPost, togglePostLike } from '../service/post'
+import { getRecentPost, togglePostLike, getPosts } from '../service/post'
 
 const router = koaRouter()
 router.prefix('/api/post')
@@ -29,6 +29,28 @@ router.route({
     const { postId } = ctx.request.body
 
     const res = await togglePostLike(postId, ctx.state.user.id)
+
+    ctx.body = res
+  }
+})
+
+// 博客页加载博客
+router.route({
+  method: 'get',
+  path: '/posts',
+  validate: {
+    query: {
+      page: Joi.number().required(),
+      timeOrder: Joi.string().valid('DESC', 'ASC').required(),
+      typeId: Joi.number().default(0)
+    }
+  },
+  handler: async (ctx) => {
+    const timeOrder = ctx.request.query.timeOrder as string
+    const typeId = Number(ctx.request.query.typeId)
+    const page = Number(ctx.request.query.page)
+
+    const res = await getPosts(ctx.state.user.id, page, timeOrder, typeId)
 
     ctx.body = res
   }

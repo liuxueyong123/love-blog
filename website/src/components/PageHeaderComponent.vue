@@ -4,13 +4,14 @@
       <img class="header-icon" :src="icon" />
       <div class="header-title">{{ title }}</div>
     </div>
-    <AvatarComponent class="header-avatar" gender="female" />
+    <AvatarComponent class="header-avatar" :gender="userGender" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import AvatarComponent from '@/components/AvatarComponent.vue';
+import { useUserInfo } from '@/context';
 
 export default defineComponent({
   components: {
@@ -26,6 +27,13 @@ export default defineComponent({
       type: String as PropType<string>,
       required: true,
     },
+  },
+  setup() {
+    const { userGender } = useUserInfo();
+
+    return {
+      userGender,
+    };
   },
 });
 </script>

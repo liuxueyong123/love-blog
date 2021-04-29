@@ -8,17 +8,17 @@
           <div>isChooseType</div>
           <button @click="goToEditStep">goToEditStep</button>
         </div>
-        <div class="edit-text-card" v-show="isEditText" @click="setShowPublishCardRef(false)">
+        <div class="edit-text-card" v-show="isEditText" @click="setShowPublishCard(false)">
           <div>isEditText</div>
         </div>
       </div>
     </van-overlay>
 
-    <div class="share-btn" @click="openNewPublishCard">Hi, Sayyeah°! What do you want to share?</div>
+    <div class="share-btn" @click="openNewPublishCard">Hi, {{ userName }}! What do you want to share?</div>
 
     <div class="filter-wrapper">
       <van-field
-        v-model="typeFilterRef"
+        v-model="typeFilterRef.text"
         readonly
         clickable
         label="Type :"
@@ -31,7 +31,7 @@
       </van-popup>
 
       <van-field
-        v-model="timeFilterRef"
+        v-model="timeFilterRef.text"
         readonly
         clickable
         label="Time :"
@@ -45,23 +45,61 @@
     </div>
 
     <div class="post-wrapper">
-      <PostItemComponent />
+      <PostItemComponent
+        v-for="item in postListMap.values()"
+        :key="item.id"
+        :post="item"
+        class="post-item"
+        @handleClick="handleLikeClick(item.id)"
+      />
     </div>
   </section>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, computed } from 'vue';
+import { defineComponent, ref, computed, watch, onMounted, Ref } from 'vue';
+// import { Toast } from 'vant';
 import PageHeaderComponent from '@/components/PageHeaderComponent.vue';
-import PostItemComponent from '@/views/post/PostItem.Component.vue';
+import PostItemComponent, { Post } from '@/views/post/PostItem.Component.vue';
+import { useUserInfo } from '@/context';
+import { useScrollBottom, useAxios } from '@/hooks';
+import { getPostsApi, postTogglePostLikeApi } from '@/constants';
 
 enum PublishStep {
   chooseType = 1,
   editText = 2,
 }
 
-const typeFilterList = ['All', 'travel', 'dirary'];
-const timeFilterList = ['All', 'New - Old', 'Old - New'];
+interface FilterItem {
+  text: string;
+  value: string;
+}
+
+const typeFilterList: FilterItem[] = [
+  {
+    text: 'All',
+    value: '0',
+  },
+  {
+    text: 'travel',
+    value: '1',
+  },
+  {
+    text: 'dirary',
+    value: '2',
+  },
+];
+
+const timeFilterList: FilterItem[] = [
+  {
+    text: 'New - Old',
+    value: 'DESC',
+  },
+  {
+    text: 'Old - New',
+    value: 'ASC',
+  },
+];
 
 export default defineComponent({
   components: {
@@ -70,27 +108,102 @@ export default defineComponent({
   },
   name: 'PostPage',
   setup() {
-    const typeFilterRef = ref('');
+    const typeFilterRef = ref(typeFilterList[0]);
     const showTypeFilterRef = ref(false);
-    const timeFilterRef = ref('');
+    const timeFilterRef = ref(timeFilterList[0]);
     const showTimeFilterRef = ref(false);
 
-    const onTypeFilterConfirm = (value: string) => {
-      typeFilterRef.value = value;
+    const onTypeFilterConfirm = (filter: FilterItem) => {
+      typeFilterRef.value = filter;
       showTypeFilterRef.value = false;
     };
 
-    const onTimeFilterConfirm = (value: string) => {
-      timeFilterRef.value = value;
+    const onTimeFilterConfirm = (filter: FilterItem) => {
+      timeFilterRef.value = filter;
       showTimeFilterRef.value = false;
     };
+
+    const pageRef = ref(1);
+    const postListMap: Ref<Map<number, Post>> = ref(new Map([]));
+
+    const axios = useAxios();
+    const getPosts = async () => {
+      const postListRes = await axios.request({
+        ...getPostsApi,
+        params: {
+          page: pageRef.value,
+          timeOrder: timeFilterRef.value.value,
+          typeId: typeFilterRef.value.value,
+        },
+      });
+
+      if (postListRes.data.length === 0) {
+        // Toast({
+        //   type: 'fail',
+        //   message: 'No more posts~',
+        //   duration: 0,
+        //   className: 'my-toast',
+        // });
+      }
+
+      for (const item of postListRes.data) {
+        postListMap.value.set(item.id, item);
+      }
+    };
+
+    onMounted(getPosts);
+
+    watch([typeFilterRef, timeFilterRef], () => {
+      postListMap.value.clear();
+      // postListMap.value = [];
+      pageRef.value = 1;
+      getPosts();
+    });
+
+    const { isScroll2BottomRef, muteRef } = useScrollBottom();
+    watch(isScroll2BottomRef, async newValue => {
+      if (!newValue) return;
+
+      muteRef.value = true;
+      pageRef.value++;
+
+      await getPosts();
+
+      muteRef.value = false;
+      isScroll2BottomRef.value = false;
+    });
+
+    const handleLikeClick = async (postId: number) => {
+      const currentPost = postListMap.value.get(postId);
+
+      if (!currentPost) {
+        return;
+      }
+
+      currentPost.alreadyLike ? currentPost.postLikes-- : currentPost.postLikes++;
+      currentPost.alreadyLike = !currentPost.alreadyLike;
+
+      await axios
+        .request({
+          ...postTogglePostLikeApi,
+          data: {
+            postId,
+          },
+        })
+        .catch(() => {
+          currentPost.alreadyLike = !currentPost.alreadyLike;
+          currentPost.alreadyLike ? currentPost.postLikes++ : currentPost.postLikes--;
+        });
+    };
+
+    const { userName } = useUserInfo();
 
     const showPublishCardRef = ref(false);
     const publishStepRef = ref(PublishStep.chooseType);
     const isChooseType = computed(() => publishStepRef.value === PublishStep.chooseType);
     const isEditText = computed(() => publishStepRef.value === PublishStep.editText);
 
-    const setShowPublishCardRef = (show: boolean) => {
+    const setShowPublishCard = (show: boolean) => {
       showPublishCardRef.value = show;
     };
 
@@ -103,9 +216,8 @@ export default defineComponent({
       showPublishCardRef.value = true;
     };
 
-    const postList = reactive([]);
-
     return {
+      userName,
       typeFilterRef,
       showTypeFilterRef,
       typeFilterList,
@@ -114,13 +226,14 @@ export default defineComponent({
       showTimeFilterRef,
       onTypeFilterConfirm,
       onTimeFilterConfirm,
-      postList,
+      postListMap,
       showPublishCardRef,
-      setShowPublishCardRef,
+      setShowPublishCard,
       isChooseType,
       isEditText,
       goToEditStep,
       openNewPublishCard,
+      handleLikeClick,
     };
   },
 });
@@ -205,6 +318,10 @@ export default defineComponent({
 
     .post-wrapper {
       margin-top: call($fn, 20);
+
+      .post-item {
+        margin-bottom: call($fn, 15);
+      }
     }
   }
 }

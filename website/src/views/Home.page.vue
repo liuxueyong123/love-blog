@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, onMounted, ref, Ref } from 'vue';
 import AvatarComponent from '@/components/AvatarComponent.vue';
 import GiveLikeComponent from '@/components/GiveLike.component.vue';
 import { GenderList, MyRouterList, getRecentPostApi, postTogglePostLikeApi, getRecentArticleApi } from '@/constants';
@@ -65,6 +65,14 @@ interface PostItem {
   postLikes: number;
   alreadyLike: boolean;
   id: number;
+}
+
+interface ArticleItem {
+  id: string;
+  articleName: string;
+  userName: string;
+  gender: number;
+  publishTime: string;
 }
 
 const menuList = [
@@ -90,25 +98,6 @@ const menuList = [
   },
 ];
 
-const initialArticleList = [
-  {
-    imgUrl: 'http://lxy520.top/images/article-icon-1.png',
-    articleName: 'test article',
-    userName: 'Liu xueyong',
-    gender: 1,
-    publishTime: '2021/01/03 12:23:23',
-  },
-  {
-    imgUrl: 'http://lxy520.top/images/article-icon-2.png',
-    articleName: 'test article',
-    userName: 'Siying',
-    gender: 2,
-    publishTime: '2021/01/03 12:23:23',
-  },
-];
-
-const initialPostList: PostItem[] = [];
-
 export default defineComponent({
   name: 'HomePage',
   components: {
@@ -116,8 +105,8 @@ export default defineComponent({
     GiveLikeComponent,
   },
   setup() {
-    const articleList = ref(initialArticleList);
-    const postList = ref(new Map(initialPostList.map(x => [x.id, x])));
+    const articleList: Ref<ArticleItem[]> = ref([]);
+    const postList: Ref<Map<number, PostItem>> = ref(new Map([]));
 
     const { userName, userGender } = useUserInfo();
     const axios = useAxios();
@@ -125,24 +114,23 @@ export default defineComponent({
     const handleLikeClick = async (id: number) => {
       const item = postList.value.get(id);
       if (!item) {
-        console.log('id 不存在');
         return;
       }
 
       item.alreadyLike ? item.postLikes-- : item.postLikes++;
       item.alreadyLike = !item.alreadyLike;
 
-      try {
-        await axios.request({
+      await axios
+        .request({
           ...postTogglePostLikeApi,
           data: {
             postId: id,
           },
+        })
+        .catch(() => {
+          item.alreadyLike = !item.alreadyLike;
+          item.alreadyLike ? item.postLikes++ : item.postLikes--;
         });
-      } catch (e) {
-        item.alreadyLike = !item.alreadyLike;
-        item.alreadyLike ? item.postLikes++ : item.postLikes--;
-      }
     };
 
     onMounted(async () => {
