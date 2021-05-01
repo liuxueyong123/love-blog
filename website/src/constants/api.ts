@@ -26,6 +26,11 @@ export const getPostsApi: AxiosRequestConfig = {
   method: 'get',
 };
 
+export const getPostTypesApi: AxiosRequestConfig = {
+  url: '/post/types',
+  method: 'get',
+};
+
 export const postPostCommentApi: AxiosRequestConfig = {
   url: '/post/comment',
   method: 'post',

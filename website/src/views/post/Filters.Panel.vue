@@ -10,7 +10,7 @@
       class="type-filter filter"
     />
     <van-popup v-model:show="showTypeFilterRef" round position="bottom">
-      <van-picker :columns="typeFilterList" @cancel="showTypeFilterRef = false" @confirm="onTypeFilterConfirm" />
+      <van-picker :columns="typeFilterListRef" @cancel="showTypeFilterRef = false" @confirm="onTypeFilterConfirm" />
     </van-popup>
 
     <van-field
@@ -29,27 +29,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue';
+import { computed, defineComponent, PropType, ref, watch } from 'vue';
+import { PostTypeItem } from '@/views/post/Post.page.vue';
 
 interface FilterItem {
   text: string;
   value: string;
 }
 
-const typeFilterList: FilterItem[] = [
-  {
-    text: 'All',
-    value: '0',
-  },
-  {
-    text: 'travel',
-    value: '1',
-  },
-  {
-    text: 'dirary',
-    value: '2',
-  },
-];
+const typeFilterAll: FilterItem = {
+  text: 'All',
+  value: '0',
+};
 
 const timeFilterList: FilterItem[] = [
   {
@@ -64,12 +55,26 @@ const timeFilterList: FilterItem[] = [
 
 export default defineComponent({
   name: 'FilterPanel',
+  props: {
+    postTypeList: {
+      type: Array as PropType<PostTypeItem[]>,
+      required: true,
+    },
+  },
   emits: ['handleFilterChange'],
   setup(props, context) {
-    const typeFilterRef = ref(typeFilterList[0]);
+    const typeFilterRef = ref(typeFilterAll);
     const showTypeFilterRef = ref(false);
     const timeFilterRef = ref(timeFilterList[0]);
     const showTimeFilterRef = ref(false);
+
+    const typeFilterListRef = computed(() => [
+      typeFilterAll,
+      ...props.postTypeList.map(item => ({
+        text: item.typeName,
+        value: item.id,
+      })),
+    ]);
 
     const onTypeFilterConfirm = (filter: FilterItem) => {
       typeFilterRef.value = filter;
@@ -90,7 +95,7 @@ export default defineComponent({
       showTypeFilterRef,
       timeFilterRef,
       showTimeFilterRef,
-      typeFilterList,
+      typeFilterListRef,
       timeFilterList,
       onTypeFilterConfirm,
       onTimeFilterConfirm,

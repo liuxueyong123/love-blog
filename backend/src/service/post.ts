@@ -1,5 +1,5 @@
 import { WhereOptions } from 'sequelize'
-import { PostModel, UserModel, PostLikeModel, PostCommentModel } from '../model'
+import { PostModel, UserModel, PostLikeModel, PostCommentModel, PostTypeModel } from '../model'
 
 export const getPostById = async (postId: number) => {
   const res = await PostModel.findOne({
@@ -135,6 +135,13 @@ export const createPostComment = async (userId: number, postId: number, comment:
     content: comment,
     postId
   })
+
+  return res
+}
+
+// 获取所有的 post 类型
+export const getPostTypes = async () => {
+  const res = await PostTypeModel.findAll()
 
   return res
 }

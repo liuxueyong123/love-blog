@@ -1,5 +1,5 @@
 import koaRouter, { Joi } from 'koa-joi-router'
-import { getRecentPost, togglePostLike, getPosts, createPostComment, getPostById } from '../service/post'
+import { getRecentPost, togglePostLike, getPosts, createPostComment, getPostById, getPostTypes } from '../service/post'
 import * as exception from '../extension/exception'
 
 const router = koaRouter()
@@ -59,6 +59,17 @@ router.route({
     const page = Number(ctx.request.query.page)
 
     const res = await getPosts(ctx.state.user.id, page, timeOrder, typeId)
+
+    ctx.body = res
+  }
+})
+
+// 获取所有的 post 类型
+router.route({
+  method: 'get',
+  path: '/types',
+  handler: async (ctx) => {
+    const res = await getPostTypes()
 
     ctx.body = res
   }

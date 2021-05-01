@@ -19,7 +19,7 @@
     <div class="post-handler-wrapper">
       <GiveLikeComponent :alreadyLike="post.alreadyLike" :likeCount="post.postLikes" @handleClick="handleLikeClick" />
       <div class="right">
-        <input type="text" class="comment-input" v-model="commentRef" placeholder="Write a comment..." />
+        <input type="text" class="comment-input" v-model="commentRef" placeholder="Leave a comment..." />
         <div class="post-icon" @click="handleCommentSubmit"></div>
       </div>
     </div>
@@ -175,7 +175,7 @@ export default defineComponent({
           outline: none;
           border-radius: call($fn, 30);
           padding-left: call($fn, 20);
-          padding-right: call($fn, 30);
+          padding-right: call($fn, 40);
           border: call($fn, 1) solid #eaecef;
           font-size: call($fn, 12);
           color: $lightTextColor;

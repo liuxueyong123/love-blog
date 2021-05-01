@@ -4,7 +4,7 @@ import * as db from './db'
 class ArticleTypeModel extends Model {
   id!: number
   typeName!: string
-  typeDesc!: string
+  typeDetail!: string
   typeIcon!: string
 }
 
@@ -18,9 +18,9 @@ ArticleTypeModel.init(
       type: DataTypes.STRING,
       field: 'type_name'
     },
-    typeDesc: {
+    typeDetail: {
       type: DataTypes.STRING,
-      field: 'type_desc'
+      field: 'type_detail'
     },
     typeIcon: {
       type: DataTypes.STRING,

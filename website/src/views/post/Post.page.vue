@@ -2,21 +2,13 @@
   <section class="post-page">
     <PageHeaderComponent icon="http://lxy520.top/images/nav-icon-post.png" title="Posts" />
 
-    <van-overlay :show="showPublishCardRef">
-      <div class="submit-post-wrapper">
-        <div class="choose-type-card" v-show="isChooseType">
-          <div>isChooseType</div>
-          <button @click="goToEditStep">goToEditStep</button>
-        </div>
-        <div class="edit-text-card" v-show="isEditText" @click="setShowPublishCard(false)">
-          <div>isEditText</div>
-        </div>
-      </div>
-    </van-overlay>
+    <PublishPanel />
 
-    <div class="share-btn" @click="openNewPublishCard">Hi, {{ userName }}! What do you want to share?</div>
-
-    <FiltersPanel ref="filterPanelComponentRef" @handleFilterChange="handleFilterChange" />
+    <FiltersPanel
+      ref="filterPanelComponentRef"
+      :postTypeList="postTypeListRef"
+      @handleFilterChange="handleFilterChange"
+    />
 
     <div class="post-wrapper">
       <PostItemComponent
@@ -32,18 +24,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted, Ref } from 'vue';
+import { defineComponent, ref, onMounted, Ref } from 'vue';
 import { Toast } from 'vant';
 import PageHeaderComponent from '@/components/PageHeaderComponent.vue';
+import PublishPanel from '@/views/post/Publish.panel.vue';
 import FiltersPanel from '@/views/post/Filters.Panel.vue';
 import PostItemComponent, { Post } from '@/views/post/PostItem.Component.vue';
 import { useUserInfo } from '@/context';
 import { useScrollBottom, useAxios } from '@/hooks';
-import { getPostsApi, postTogglePostLikeApi, postPostCommentApi } from '@/constants';
+import { getPostsApi, postTogglePostLikeApi, postPostCommentApi, getPostTypesApi } from '@/constants';
 
-enum PublishStep {
-  chooseType = 1,
-  editText = 2,
+export interface PostTypeItem {
+  id: number;
+  typeName: string;
+  typeDetail: string;
+  typeIcon: string;
 }
 
 export default defineComponent({
@@ -51,11 +46,19 @@ export default defineComponent({
     PageHeaderComponent,
     PostItemComponent,
     FiltersPanel,
+    PublishPanel,
   },
   name: 'PostPage',
   setup() {
     const { userName } = useUserInfo();
     const axios = useAxios();
+
+    const postTypeListRef: Ref<PostTypeItem[]> = ref([]);
+    onMounted(async () => {
+      const postTypes = await axios.request(getPostTypesApi);
+
+      postTypeListRef.value = postTypes.data;
+    });
 
     const filterPanelComponentRef: Ref<typeof FiltersPanel | null> = ref(null);
     const pageRef = ref(1);
@@ -147,33 +150,9 @@ export default defineComponent({
       comment.value = '';
     };
 
-    const showPublishCardRef = ref(false);
-    const publishStepRef = ref(PublishStep.chooseType);
-    const isChooseType = computed(() => publishStepRef.value === PublishStep.chooseType);
-    const isEditText = computed(() => publishStepRef.value === PublishStep.editText);
-
-    const setShowPublishCard = (show: boolean) => {
-      showPublishCardRef.value = show;
-    };
-
-    const goToEditStep = () => {
-      publishStepRef.value = PublishStep.editText;
-    };
-
-    const openNewPublishCard = () => {
-      publishStepRef.value = PublishStep.chooseType;
-      showPublishCardRef.value = true;
-    };
-
     return {
-      userName,
+      postTypeListRef,
       postListMap,
-      showPublishCardRef,
-      setShowPublishCard,
-      isChooseType,
-      isEditText,
-      goToEditStep,
-      openNewPublishCard,
       handleLikeClick,
       handleCommentSubmit,
       handleFilterChange,
@@ -188,77 +167,6 @@ export default defineComponent({
   .post-page {
     width: 100%;
     padding: 0 $padding;
-
-    .share-btn {
-      margin-top: call($fn, 15);
-      width: 100%;
-      height: call($fn, 40);
-      background: rgba(255, 255, 255, 0.7);
-      border-radius: call($fn, 15);
-      border: 1px solid #e1e1e2;
-      box-shadow: 0 1px 2px #e1e1e2;
-      text-align: center;
-      line-height: call($fn, 40);
-      font-size: call($fn, 14);
-      font-weight: 500;
-    }
-
-    .submit-post-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-
-      .choose-type-card {
-        width: 80%;
-        height: 80%;
-        border-radius: call($fn, 10);
-        background-color: #fff;
-      }
-
-      .edit-text-card {
-        width: 80%;
-        height: 50%;
-        border-radius: call($fn, 10);
-        background-color: #fff;
-      }
-    }
-
-    // .filter-wrapper {
-    //   margin-top: call($fn, 20);
-    //   width: 100%;
-    //   display: flex;
-    //   justify-content: space-between;
-
-    //   .filter {
-    //     width: 45%;
-    //     flex: 0 0 45%;
-    //     height: call($fn, 40);
-    //     line-height: call($fn, 40);
-    //     padding: 0 call($fn, 10);
-    //     background: rgba(255, 255, 255, 0.7);
-    //     border-radius: call($fn, 8);
-    //     border: 1px solid #e1e1e2;
-    //     box-shadow: 0 1px 2px #e1e1e2;
-
-    //     &::v-deep(.van-cell__title) {
-    //       width: 40%;
-    //       margin-right: 0;
-
-    //       .span {
-    //         color: $lightTextColor;
-    //         font-size: call($fn, 12);
-    //       }
-    //     }
-
-    //     &::v-deep(.van-cell__value) {
-    //       .van-field__control {
-    //         color: $textColor;
-    //         font-size: call($fn, 14);
-    //       }
-    //     }
-    //   }
-    // }
 
     .post-wrapper {
       margin-top: call($fn, 20);
