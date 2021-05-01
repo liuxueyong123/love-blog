@@ -20,3 +20,10 @@ export const notLogin = (ctx: Context) => {
     error: 'Not login yet!'
   }
 }
+
+export const postNotExist = (ctx: Context) => {
+  ctx.status = 400
+  ctx.body = {
+    error: 'post is not exist'
+  }
+}

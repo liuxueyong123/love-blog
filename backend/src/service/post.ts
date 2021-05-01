@@ -1,6 +1,16 @@
 import { WhereOptions } from 'sequelize'
 import { PostModel, UserModel, PostLikeModel, PostCommentModel } from '../model'
 
+export const getPostById = async (postId: number) => {
+  const res = await PostModel.findOne({
+    where: {
+      id: postId
+    }
+  })
+
+  return res
+}
+
 // 获取首页最近博客
 export const getRecentPost = async (userId: number) => {
   const recentPostList = await PostModel.findAll({
@@ -114,6 +124,17 @@ export const getPosts = async (userId: number, page: number, timeOrder: string, 
       alreadyLike: item.postLikes!.filter((x) => x.accountId === userId).length > 0
     })
   }
+
+  return res
+}
+
+// 提交博客评论
+export const createPostComment = async (userId: number, postId: number, comment: string) => {
+  const res = await PostCommentModel.create({
+    accountId: userId,
+    content: comment,
+    postId
+  })
 
   return res
 }

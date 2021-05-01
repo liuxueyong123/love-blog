@@ -50,7 +50,8 @@
         :key="item.id"
         :post="item"
         class="post-item"
-        @handleClick="handleLikeClick(item.id)"
+        @handleLikeClick="handleLikeClick(item.id)"
+        @handleCommentSubmit="handleCommentSubmit"
       />
     </div>
   </section>
@@ -58,12 +59,12 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, watch, onMounted, Ref } from 'vue';
-// import { Toast } from 'vant';
+import { Toast } from 'vant';
 import PageHeaderComponent from '@/components/PageHeaderComponent.vue';
 import PostItemComponent, { Post } from '@/views/post/PostItem.Component.vue';
 import { useUserInfo } from '@/context';
 import { useScrollBottom, useAxios } from '@/hooks';
-import { getPostsApi, postTogglePostLikeApi } from '@/constants';
+import { getPostsApi, postTogglePostLikeApi, postPostCommentApi } from '@/constants';
 
 enum PublishStep {
   chooseType = 1,
@@ -108,6 +109,9 @@ export default defineComponent({
   },
   name: 'PostPage',
   setup() {
+    const { userName } = useUserInfo();
+    const axios = useAxios();
+
     const typeFilterRef = ref(typeFilterList[0]);
     const showTypeFilterRef = ref(false);
     const timeFilterRef = ref(timeFilterList[0]);
@@ -126,7 +130,6 @@ export default defineComponent({
     const pageRef = ref(1);
     const postListMap: Ref<Map<number, Post>> = ref(new Map([]));
 
-    const axios = useAxios();
     const getPosts = async () => {
       const postListRes = await axios.request({
         ...getPostsApi,
@@ -138,40 +141,31 @@ export default defineComponent({
       });
 
       if (postListRes.data.length === 0) {
-        // Toast({
-        //   type: 'fail',
-        //   message: 'No more posts~',
-        //   duration: 0,
-        //   className: 'my-toast',
-        // });
+        Toast({
+          type: 'fail',
+          message: 'No more posts~',
+          duration: 1000,
+          className: 'my-toast',
+        });
+        return;
       }
 
       for (const item of postListRes.data) {
         postListMap.value.set(item.id, item);
       }
+
+      pageRef.value++;
     };
 
     onMounted(getPosts);
 
     watch([typeFilterRef, timeFilterRef], () => {
       postListMap.value.clear();
-      // postListMap.value = [];
       pageRef.value = 1;
       getPosts();
     });
 
-    const { isScroll2BottomRef, muteRef } = useScrollBottom();
-    watch(isScroll2BottomRef, async newValue => {
-      if (!newValue) return;
-
-      muteRef.value = true;
-      pageRef.value++;
-
-      await getPosts();
-
-      muteRef.value = false;
-      isScroll2BottomRef.value = false;
-    });
+    useScrollBottom(getPosts);
 
     const handleLikeClick = async (postId: number) => {
       const currentPost = postListMap.value.get(postId);
@@ -190,13 +184,35 @@ export default defineComponent({
             postId,
           },
         })
-        .catch(() => {
+        .catch(err => {
           currentPost.alreadyLike = !currentPost.alreadyLike;
           currentPost.alreadyLike ? currentPost.postLikes++ : currentPost.postLikes--;
+          throw new Error(err);
         });
     };
 
-    const { userName } = useUserInfo();
+    const handleCommentSubmit = async (postId: number, comment: Ref<string>) => {
+      const currentPost = postListMap.value.get(postId);
+
+      if (!currentPost) {
+        return;
+      }
+
+      await axios.request({
+        ...postPostCommentApi,
+        data: {
+          postId,
+          comment: comment.value,
+        },
+      });
+
+      currentPost.postComments.push({
+        writer: userName.value,
+        content: comment.value,
+      });
+
+      comment.value = '';
+    };
 
     const showPublishCardRef = ref(false);
     const publishStepRef = ref(PublishStep.chooseType);
@@ -234,6 +250,7 @@ export default defineComponent({
       goToEditStep,
       openNewPublishCard,
       handleLikeClick,
+      handleCommentSubmit,
     };
   },
 });

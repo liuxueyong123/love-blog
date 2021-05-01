@@ -1,4 +1,4 @@
-import { Model, DataTypes } from 'sequelize'
+import { Model, DataTypes, NOW } from 'sequelize'
 import * as db from './db'
 import UserModel from './user'
 
@@ -30,7 +30,9 @@ PostCommentModel.init(
     },
     publishTime: {
       type: DataTypes.TIME,
-      field: 'publish_time'
+      field: 'publish_time',
+      allowNull: false,
+      defaultValue: NOW
     }
   },
   {

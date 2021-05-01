@@ -1,11 +1,6 @@
 <template>
   <section class="give-like-component">
-    <div
-      v-show="!isFirstLoadRef"
-      class="like-icon"
-      :class="{ 'lick-icon-animation': alreadyLike }"
-      @click="$emit('handleClick')"
-    ></div>
+    <div class="like-icon" :class="{ 'lick-icon-animation': alreadyLike }" @click="$emit('handleClick')"></div>
     <div class="like-content">{{ likeCount }} like</div>
   </section>
 </template>

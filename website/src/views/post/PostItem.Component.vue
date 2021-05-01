@@ -17,21 +17,17 @@
       </div>
     </div>
     <div class="post-handler-wrapper">
-      <GiveLikeComponent
-        :alreadyLike="post.alreadyLike"
-        :likeCount="post.postLikes"
-        @handleClick="$emit('handleClick')"
-      />
+      <GiveLikeComponent :alreadyLike="post.alreadyLike" :likeCount="post.postLikes" @handleClick="handleLikeClick" />
       <div class="right">
-        <input type="text" class="comment-input" placeholder="Write a comment..." />
-        <div class="post-icon"></div>
+        <input type="text" class="comment-input" v-model="commentRef" placeholder="Write a comment..." />
+        <div class="post-icon" @click="handleCommentSubmit"></div>
       </div>
     </div>
   </section>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed } from 'vue';
+import { defineComponent, PropType, computed, ref } from 'vue';
 import moment from 'moment';
 import AvatarComponent from '@/components/AvatarComponent.vue';
 import GiveLikeComponent from '@/components/GiveLike.component.vue';
@@ -65,14 +61,27 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['handleClick'],
-  setup(props) {
+  emits: ['handleLikeClick', 'handleCommentSubmit'],
+  setup(props, context) {
     const publishTime = computed(() => moment(props.post.publishTime).format('YYYY-MM-DD HH:mm'));
     const gender = computed(() => GenderList[props.post.gender]);
+
+    const commentRef = ref('');
+
+    const handleCommentSubmit = () => {
+      context.emit('handleCommentSubmit', props.post.id, commentRef);
+    };
+
+    const handleLikeClick = () => {
+      context.emit('handleLikeClick');
+    };
 
     return {
       gender,
       publishTime,
+      commentRef,
+      handleCommentSubmit,
+      handleLikeClick,
     };
   },
 });

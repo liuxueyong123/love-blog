@@ -1,11 +1,11 @@
 import { onMounted, onUnmounted, ref } from 'vue';
 import { debounce } from 'lodash';
 
-const useScrollBottom = () => {
+const useScrollBottom = (callback: Function) => {
   const isScroll2BottomRef = ref(false);
   const muteRef = ref(false);
 
-  const handleScroll = () => {
+  const handleScroll = async () => {
     const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
     const windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
     const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
@@ -17,7 +17,12 @@ const useScrollBottom = () => {
 
     if (windowHeight + scrollTop + 20 >= scrollHeight) {
       isScroll2BottomRef.value = true;
-      console.log('到底部了');
+      muteRef.value = true;
+
+      await callback();
+
+      muteRef.value = false;
+      isScroll2BottomRef.value = false;
     } else {
       isScroll2BottomRef.value = false;
     }

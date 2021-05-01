@@ -34,7 +34,7 @@ const initInterceptors = () => {
       Toast({
         type: 'fail',
         message,
-        duration: 0,
+        duration: 1000,
         className: 'my-toast',
       });
 

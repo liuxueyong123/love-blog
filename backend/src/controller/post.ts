@@ -1,5 +1,6 @@
 import koaRouter, { Joi } from 'koa-joi-router'
-import { getRecentPost, togglePostLike, getPosts } from '../service/post'
+import { getRecentPost, togglePostLike, getPosts, createPostComment, getPostById } from '../service/post'
+import * as exception from '../extension/exception'
 
 const router = koaRouter()
 router.prefix('/api/post')
@@ -26,7 +27,14 @@ router.route({
     }
   },
   handler: async (ctx) => {
-    const { postId } = ctx.request.body
+    const postId = Number(ctx.request.body.postId)
+
+    const postRes = await getPostById(postId)
+
+    if (!postRes) {
+      exception.postNotExist(ctx)
+      return
+    }
 
     const res = await togglePostLike(postId, ctx.state.user.id)
 
@@ -51,6 +59,35 @@ router.route({
     const page = Number(ctx.request.query.page)
 
     const res = await getPosts(ctx.state.user.id, page, timeOrder, typeId)
+
+    ctx.body = res
+  }
+})
+
+// 提交博客评论
+router.route({
+  method: 'post',
+  path: '/comment',
+  validate: {
+    type: 'json',
+    body: {
+      postId: Joi.number().required(),
+      comment: Joi.string().required()
+    }
+  },
+  handler: async (ctx) => {
+    const userId = ctx.state.user.id
+    const postId = Number(ctx.request.body.postId)
+    const comment = ctx.request.body.comment as string
+
+    const postRes = await getPostById(postId)
+
+    if (!postRes) {
+      exception.postNotExist(ctx)
+      return
+    }
+
+    const res = await createPostComment(userId, postId, comment)
 
     ctx.body = res
   }
