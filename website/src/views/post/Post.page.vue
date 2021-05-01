@@ -16,33 +16,7 @@
 
     <div class="share-btn" @click="openNewPublishCard">Hi, {{ userName }}! What do you want to share?</div>
 
-    <div class="filter-wrapper">
-      <van-field
-        v-model="typeFilterRef.text"
-        readonly
-        clickable
-        label="Type :"
-        placeholder="type filter"
-        @click="showTypeFilterRef = true"
-        class="type-filter filter"
-      />
-      <van-popup v-model:show="showTypeFilterRef" round position="bottom">
-        <van-picker :columns="typeFilterList" @cancel="showTypeFilterRef = false" @confirm="onTypeFilterConfirm" />
-      </van-popup>
-
-      <van-field
-        v-model="timeFilterRef.text"
-        readonly
-        clickable
-        label="Time :"
-        placeholder="time filter"
-        @click="showTimeFilterRef = true"
-        class="time-filter filter"
-      />
-      <van-popup v-model:show="showTimeFilterRef" round position="bottom">
-        <van-picker :columns="timeFilterList" @cancel="showTimeFilterRef = false" @confirm="onTimeFilterConfirm" />
-      </van-popup>
-    </div>
+    <FiltersPanel ref="filterPanelComponentRef" @handleFilterChange="handleFilterChange" />
 
     <div class="post-wrapper">
       <PostItemComponent
@@ -58,9 +32,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch, onMounted, Ref } from 'vue';
+import { defineComponent, ref, computed, onMounted, Ref } from 'vue';
 import { Toast } from 'vant';
 import PageHeaderComponent from '@/components/PageHeaderComponent.vue';
+import FiltersPanel from '@/views/post/Filters.Panel.vue';
 import PostItemComponent, { Post } from '@/views/post/PostItem.Component.vue';
 import { useUserInfo } from '@/context';
 import { useScrollBottom, useAxios } from '@/hooks';
@@ -71,72 +46,30 @@ enum PublishStep {
   editText = 2,
 }
 
-interface FilterItem {
-  text: string;
-  value: string;
-}
-
-const typeFilterList: FilterItem[] = [
-  {
-    text: 'All',
-    value: '0',
-  },
-  {
-    text: 'travel',
-    value: '1',
-  },
-  {
-    text: 'dirary',
-    value: '2',
-  },
-];
-
-const timeFilterList: FilterItem[] = [
-  {
-    text: 'New - Old',
-    value: 'DESC',
-  },
-  {
-    text: 'Old - New',
-    value: 'ASC',
-  },
-];
-
 export default defineComponent({
   components: {
     PageHeaderComponent,
     PostItemComponent,
+    FiltersPanel,
   },
   name: 'PostPage',
   setup() {
     const { userName } = useUserInfo();
     const axios = useAxios();
 
-    const typeFilterRef = ref(typeFilterList[0]);
-    const showTypeFilterRef = ref(false);
-    const timeFilterRef = ref(timeFilterList[0]);
-    const showTimeFilterRef = ref(false);
-
-    const onTypeFilterConfirm = (filter: FilterItem) => {
-      typeFilterRef.value = filter;
-      showTypeFilterRef.value = false;
-    };
-
-    const onTimeFilterConfirm = (filter: FilterItem) => {
-      timeFilterRef.value = filter;
-      showTimeFilterRef.value = false;
-    };
-
+    const filterPanelComponentRef: Ref<typeof FiltersPanel | null> = ref(null);
     const pageRef = ref(1);
     const postListMap: Ref<Map<number, Post>> = ref(new Map([]));
 
     const getPosts = async () => {
+      const filterPanelComponent = filterPanelComponentRef.value as typeof FiltersPanel;
+
       const postListRes = await axios.request({
         ...getPostsApi,
         params: {
           page: pageRef.value,
-          timeOrder: timeFilterRef.value.value,
-          typeId: typeFilterRef.value.value,
+          timeOrder: filterPanelComponent.timeFilterRef.value,
+          typeId: filterPanelComponent.typeFilterRef.value,
         },
       });
 
@@ -159,11 +92,11 @@ export default defineComponent({
 
     onMounted(getPosts);
 
-    watch([typeFilterRef, timeFilterRef], () => {
+    const handleFilterChange = () => {
       postListMap.value.clear();
       pageRef.value = 1;
       getPosts();
-    });
+    };
 
     useScrollBottom(getPosts);
 
@@ -234,14 +167,6 @@ export default defineComponent({
 
     return {
       userName,
-      typeFilterRef,
-      showTypeFilterRef,
-      typeFilterList,
-      timeFilterList,
-      timeFilterRef,
-      showTimeFilterRef,
-      onTypeFilterConfirm,
-      onTimeFilterConfirm,
       postListMap,
       showPublishCardRef,
       setShowPublishCard,
@@ -251,6 +176,8 @@ export default defineComponent({
       openNewPublishCard,
       handleLikeClick,
       handleCommentSubmit,
+      handleFilterChange,
+      filterPanelComponentRef,
     };
   },
 });
@@ -297,41 +224,41 @@ export default defineComponent({
       }
     }
 
-    .filter-wrapper {
-      margin-top: call($fn, 20);
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
+    // .filter-wrapper {
+    //   margin-top: call($fn, 20);
+    //   width: 100%;
+    //   display: flex;
+    //   justify-content: space-between;
 
-      .filter {
-        width: 45%;
-        flex: 0 0 45%;
-        height: call($fn, 40);
-        line-height: call($fn, 40);
-        padding: 0 call($fn, 10);
-        background: rgba(255, 255, 255, 0.7);
-        border-radius: call($fn, 8);
-        border: 1px solid #e1e1e2;
-        box-shadow: 0 1px 2px #e1e1e2;
+    //   .filter {
+    //     width: 45%;
+    //     flex: 0 0 45%;
+    //     height: call($fn, 40);
+    //     line-height: call($fn, 40);
+    //     padding: 0 call($fn, 10);
+    //     background: rgba(255, 255, 255, 0.7);
+    //     border-radius: call($fn, 8);
+    //     border: 1px solid #e1e1e2;
+    //     box-shadow: 0 1px 2px #e1e1e2;
 
-        &::v-deep(.van-cell__title) {
-          width: 40%;
-          margin-right: 0;
+    //     &::v-deep(.van-cell__title) {
+    //       width: 40%;
+    //       margin-right: 0;
 
-          .span {
-            color: $lightTextColor;
-            font-size: call($fn, 12);
-          }
-        }
+    //       .span {
+    //         color: $lightTextColor;
+    //         font-size: call($fn, 12);
+    //       }
+    //     }
 
-        &::v-deep(.van-cell__value) {
-          .van-field__control {
-            color: $textColor;
-            font-size: call($fn, 14);
-          }
-        }
-      }
-    }
+    //     &::v-deep(.van-cell__value) {
+    //       .van-field__control {
+    //         color: $textColor;
+    //         font-size: call($fn, 14);
+    //       }
+    //     }
+    //   }
+    // }
 
     .post-wrapper {
       margin-top: call($fn, 20);
