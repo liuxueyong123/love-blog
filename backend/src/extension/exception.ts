@@ -27,3 +27,10 @@ export const postNotExist = (ctx: Context) => {
     error: 'post is not exist'
   }
 }
+
+export const postTypeNotExist = (ctx: Context) => {
+  ctx.status = 400
+  ctx.body = {
+    error: 'post type is not exist'
+  }
+}

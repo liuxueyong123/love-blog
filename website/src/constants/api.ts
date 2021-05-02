@@ -35,3 +35,8 @@ export const postPostCommentApi: AxiosRequestConfig = {
   url: '/post/comment',
   method: 'post',
 };
+
+export const postCreatePostApi: AxiosRequestConfig = {
+  url: '/post/create',
+  method: 'post',
+};

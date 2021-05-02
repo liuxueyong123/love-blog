@@ -2,7 +2,7 @@
   <section class="post-page">
     <PageHeaderComponent icon="http://lxy520.top/images/nav-icon-post.png" title="Posts" />
 
-    <PublishPanel />
+    <PublishPanel :postTypeList="postTypeListRef" @handleAfterPublish="handleAfterPublish" />
 
     <FiltersPanel
       ref="filterPanelComponentRef"
@@ -101,6 +101,12 @@ export default defineComponent({
       getPosts();
     };
 
+    const handleAfterPublish = () => {
+      postListMap.value.clear();
+      pageRef.value = 1;
+      getPosts();
+    };
+
     useScrollBottom(getPosts);
 
     const handleLikeClick = async (postId: number) => {
@@ -157,6 +163,7 @@ export default defineComponent({
       handleCommentSubmit,
       handleFilterChange,
       filterPanelComponentRef,
+      handleAfterPublish,
     };
   },
 });

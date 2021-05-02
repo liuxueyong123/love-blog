@@ -11,6 +11,16 @@ export const getPostById = async (postId: number) => {
   return res
 }
 
+export const getPostTypeById = async (typeId: number) => {
+  const res = await PostTypeModel.findOne({
+    where: {
+      id: typeId
+    }
+  })
+
+  return res
+}
+
 // 获取首页最近博客
 export const getRecentPost = async (userId: number) => {
   const recentPostList = await PostModel.findAll({
@@ -134,6 +144,16 @@ export const createPostComment = async (userId: number, postId: number, comment:
     accountId: userId,
     content: comment,
     postId
+  })
+
+  return res
+}
+
+export const createPost = async (userId: number, typeId: number, content: string) => {
+  const res = await PostModel.create({
+    publisherId: userId,
+    content,
+    typeId
   })
 
   return res

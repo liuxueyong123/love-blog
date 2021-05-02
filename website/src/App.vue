@@ -54,6 +54,7 @@ export default defineComponent({
 @mixin mobile($fn, $padding) {
   #layout {
     width: 100vw;
+    min-height: 100vh;
     position: relative;
     max-width: 500px;
     margin: 0 auto;

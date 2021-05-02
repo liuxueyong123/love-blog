@@ -96,6 +96,7 @@ export default defineComponent({
     border: call($fn, 1) solid #e1e1e2;
     box-shadow: 0 call($fn, 1) call($fn, 2) #e1e1e2;
     padding: call($fn, 10) call($fn, 15);
+    animation: fadeIn 0.8s ease;
 
     .post-header {
       width: 100%;

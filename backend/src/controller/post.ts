@@ -1,5 +1,5 @@
 import koaRouter, { Joi } from 'koa-joi-router'
-import { getRecentPost, togglePostLike, getPosts, createPostComment, getPostById, getPostTypes } from '../service/post'
+import { getRecentPost, togglePostLike, getPosts, createPostComment, getPostById, getPostTypes, getPostTypeById, createPost } from '../service/post'
 import * as exception from '../extension/exception'
 
 const router = koaRouter()
@@ -99,6 +99,35 @@ router.route({
     }
 
     const res = await createPostComment(userId, postId, comment)
+
+    ctx.body = res
+  }
+})
+
+// 创建新博客
+router.route({
+  method: 'post',
+  path: '/create',
+  validate: {
+    type: 'json',
+    body: {
+      typeId: Joi.number().required(),
+      content: Joi.string().required()
+    }
+  },
+  handler: async (ctx) => {
+    const userId = ctx.state.user.id
+    const typeId = Number(ctx.request.body.typeId)
+    const content = ctx.request.body.content as string
+
+    const postTypeRes = await getPostTypeById(typeId)
+
+    if (!postTypeRes) {
+      exception.postTypeNotExist(ctx)
+      return
+    }
+
+    const res = await createPost(userId, typeId, content)
 
     ctx.body = res
   }

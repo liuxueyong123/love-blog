@@ -5,6 +5,7 @@ import {
   Field,
   Popup,
   Overlay,
+  Icon,
   // Toast
 } from 'vant';
 
@@ -22,6 +23,7 @@ app.use(Picker);
 app.use(Field);
 app.use(Popup);
 app.use(Overlay);
+app.use(Icon);
 // app.use(Toast);
 
 app.mount('#app');
