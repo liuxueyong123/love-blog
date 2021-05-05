@@ -16,3 +16,5 @@ export const getGreeting = () => {
 };
 
 export const greeting = getGreeting();
+
+export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));

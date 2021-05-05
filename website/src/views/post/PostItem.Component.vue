@@ -135,6 +135,8 @@ export default defineComponent({
       font-size: call($fn, 14);
       line-height: 1.2;
       color: $lightTextColor;
+      white-space: pre-wrap;
+      word-break: break-all;
     }
 
     .post-comment-wrapper {

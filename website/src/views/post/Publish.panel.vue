@@ -30,6 +30,8 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, PropType, Ref } from 'vue';
+import { Toast } from 'vant';
+import { sleep } from '@/utils';
 import { useUserInfo } from '@/context';
 import { postCreatePostApi } from '@/constants';
 import { useAxios } from '@/hooks';
@@ -83,6 +85,15 @@ export default defineComponent({
 
       postInputRef.value = '';
       showPublishCardRef.value = false;
+
+      Toast({
+        type: 'success',
+        message: 'Publish successfully',
+        duration: 500,
+        className: 'my-toast',
+      });
+
+      await sleep(800);
 
       context.emit('handleAfterPublish');
     };

@@ -77,7 +77,8 @@ export default defineComponent({
           width: 50%;
           margin: 0 auto;
           margin-top: call($fn, 3);
-          height: call($fn, 2);
+          height: call($fn, 3);
+          border-radius: call($fn, 1);
           background: $primaryBackgroundColor;
           animation: scaleIn 0.7s;
         }

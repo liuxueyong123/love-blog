@@ -12,19 +12,34 @@ const initConfig = () => {
 };
 
 const initInterceptors = () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let toast: any;
   axios.interceptors.request.use(
-    config => config,
+    config => {
+      toast = Toast({
+        type: 'loading',
+        message: 'loading',
+        duration: 0,
+        className: 'my-toast',
+      });
+
+      return config;
+    },
     error => Promise.reject(error),
   );
 
   axios.interceptors.response.use(
     response => {
+      toast && toast.clear();
+
       if (response.status === 200) {
         return Promise.resolve(response);
       }
       return Promise.reject(response);
     },
     error => {
+      toast && toast.clear();
+
       if (error.response.status === 401) {
         location.href = 'http://' + location.host + '/page/login';
       }

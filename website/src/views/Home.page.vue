@@ -251,6 +251,7 @@ export default defineComponent({
         display: flex;
         padding: call($fn, 10) call($fn, 10);
         margin-top: call($fn, 10);
+        animation: fadeIn 0.8s ease;
 
         .item-image {
           display: block;
@@ -310,6 +311,7 @@ export default defineComponent({
         width: 47%;
         height: call($fn, 180);
         padding: call($fn, 10) call($fn, 15);
+        animation: fadeIn 0.8s ease;
 
         &:nth-child(n + 3) {
           margin-top: call($fn, 10);
@@ -333,6 +335,8 @@ export default defineComponent({
           line-height: call($fn, 18);
           color: $lightTextColor;
           height: call($fn, 36);
+          white-space: pre-wrap;
+          word-break: break-all;
           overflow: hidden;
           text-overflow: ellipsis;
           display: -webkit-box; //作为弹性伸缩盒子模型显示。
