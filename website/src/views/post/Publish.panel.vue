@@ -21,6 +21,15 @@
           <img class="close-icon" src="http://lxy520.top/images/icon-close.png" @click="showPublishCardRef = false" />
           <div class="card-title">Publish Post > {{ currentTypeRef && currentTypeRef.typeName }}</div>
           <textarea class="textarea" placeholder="Write something to record..." v-model="postInputRef" />
+          <van-uploader
+            class="img-upload"
+            v-model="uploadImgList"
+            multiple
+            :after-read="afterRead"
+            :max-count="9"
+            v-show="showImgUploaderRef"
+          ></van-uploader>
+          <div class="add-image" @click="showImgUploaderRef = true"></div>
           <div class="submit-btn" @click="submitPublishPost">Publish</div>
         </div>
       </div>
@@ -30,12 +39,24 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, PropType, Ref } from 'vue';
+import OSS from 'ali-oss';
 import { Toast } from 'vant';
 import { sleep } from '@/utils';
 import { useUserInfo } from '@/context';
 import { postCreatePostApi } from '@/constants';
 import { useAxios } from '@/hooks';
 import { PostTypeItem } from '@/views/post/Post.page.vue';
+
+const config = {
+  oss: {
+    region: 'oss-cn-shanghai',
+    accessKeyId: 'LTAI4G1FJ9dkZpxbcEGseh5L',
+    accessKeySecret: 'PkTNQqfefhXu1beZqoUkvRX0Sb1oZz',
+    bucket: 'lxyaitsy',
+  },
+};
+
+const client = new OSS(config.oss);
 
 enum PublishStep {
   chooseType = 1,
@@ -98,6 +119,20 @@ export default defineComponent({
       context.emit('handleAfterPublish');
     };
 
+    const showImgUploaderRef = ref(false);
+    const uploadImgList = ref([
+      // {
+      //   url: 'https://img.yzcdn.cn/vant/leaf.jpg',
+      // },
+    ]);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const afterRead = async (file: any) => {
+      await client.put(`test.jpeg`, file.file);
+      console.log(uploadImgList.value);
+      console.log(file);
+    };
+
     return {
       userName,
       showPublishCardRef,
@@ -109,6 +144,9 @@ export default defineComponent({
       currentTypeRef,
       postInputRef,
       submitPublishPost,
+      uploadImgList,
+      afterRead,
+      showImgUploaderRef,
     };
   },
 });
@@ -223,13 +261,28 @@ export default defineComponent({
           outline: none;
           margin-top: call($fn, 10);
           padding: 0 call($fn, 10);
-          height: call($fn, 300);
+          height: call($fn, 250);
 
           &::placeholder {
             font-size: call($fn, 14);
             color: $lightTextColor;
             opacity: 0.5;
           }
+        }
+
+        .van-uploader {
+          width: 100%;
+          padding: 0 call($fn, 10);
+        }
+
+        .add-image {
+          background-image: url('http://lxy520.top/images/icon-add-image.png');
+          background-size: 100% 100%;
+          height: call($fn, 20);
+          width: call($fn, 20);
+          position: absolute;
+          left: call($fn, 10);
+          bottom: call($fn, 15);
         }
 
         .submit-btn {
