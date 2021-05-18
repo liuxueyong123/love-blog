@@ -39,24 +39,12 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, PropType, Ref } from 'vue';
-import OSS from 'ali-oss';
 import { Toast } from 'vant';
 import { sleep } from '@/utils';
 import { useUserInfo } from '@/context';
 import { postCreatePostApi } from '@/constants';
 import { useAxios } from '@/hooks';
 import { PostTypeItem } from '@/views/post/Post.page.vue';
-
-const config = {
-  oss: {
-    region: 'oss-cn-shanghai',
-    accessKeyId: 'LTAI4G1FJ9dkZpxbcEGseh5L',
-    accessKeySecret: 'PkTNQqfefhXu1beZqoUkvRX0Sb1oZz',
-    bucket: 'lxyaitsy',
-  },
-};
-
-const client = new OSS(config.oss);
 
 enum PublishStep {
   chooseType = 1,
@@ -128,9 +116,19 @@ export default defineComponent({
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const afterRead = async (file: any) => {
-      await client.put(`test.jpeg`, file.file);
-      console.log(uploadImgList.value);
-      console.log(file);
+      const formData = new FormData();
+      formData.append('file', file.file);
+
+      const res = await axios.request({
+        url: '/post/upload/image',
+        method: 'put',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        data: formData,
+      });
+
+      console.log(res.data.filename);
     };
 
     return {

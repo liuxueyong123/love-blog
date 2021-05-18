@@ -1,4 +1,6 @@
 import koaRouter, { Joi } from 'koa-joi-router'
+import OSS from 'ali-oss'
+import config from '../../config'
 import { getRecentPost, togglePostLike, getPosts, createPostComment, getPostById, getPostTypes, getPostTypeById, createPost } from '../service/post'
 import * as exception from '../extension/exception'
 
@@ -130,6 +132,28 @@ router.route({
     const res = await createPost(userId, typeId, content)
 
     ctx.body = res
+  }
+})
+
+router.route({
+  method: 'put',
+  path: '/upload/image',
+  handler: async (ctx) => {
+    const file = (ctx.request as any).files.file
+    const filename = `${Date.now()}-${file.name}`
+
+    const client = new OSS(config.oss)
+
+    try {
+      await client.put(`/images/post/${filename}`, file.path)
+    } catch (e) {
+      exception.uploadImageFailed(ctx)
+      return
+    }
+
+    ctx.body = {
+      filename
+    }
   }
 })
 

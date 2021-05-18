@@ -34,3 +34,10 @@ export const postTypeNotExist = (ctx: Context) => {
     error: 'post type is not exist'
   }
 }
+
+export const uploadImageFailed = (ctx: Context) => {
+  ctx.status = 500
+  ctx.body = {
+    error: 'upload image failed'
+  }
+}
