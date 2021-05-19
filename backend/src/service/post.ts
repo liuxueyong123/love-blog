@@ -149,11 +149,12 @@ export const createPostComment = async (userId: number, postId: number, comment:
   return res
 }
 
-export const createPost = async (userId: number, typeId: number, content: string) => {
+export const createPost = async (userId: number, typeId: number, content: string, imgList: string[]) => {
   const res = await PostModel.create({
     publisherId: userId,
     content,
-    typeId
+    typeId,
+    imgList: JSON.stringify(imgList)
   })
 
   return res

@@ -11,6 +11,7 @@ class PostModel extends Model {
   content!: string
   publishTime!: string
   typeId!: number
+  imgList!: string
   user?: UserModel
   postLikes?: PostLikeModel[]
   postComments?: PostCommentModel[]
@@ -28,6 +29,10 @@ PostModel.init(
     },
     content: {
       type: DataTypes.TEXT
+    },
+    imgList: {
+      type: DataTypes.TEXT,
+      field: 'img_list'
     },
     publishTime: {
       type: DataTypes.TIME,

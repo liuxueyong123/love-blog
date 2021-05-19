@@ -23,12 +23,14 @@
           <textarea class="textarea" placeholder="Write something to record..." v-model="postInputRef" />
           <van-uploader
             class="img-upload"
-            v-model="uploadImgList"
+            v-model="uploadImgListRef"
             multiple
             :after-read="afterRead"
+            :before-delete="beforeDelete"
             :max-count="9"
             v-show="showImgUploaderRef"
           ></van-uploader>
+          <div v-for="(item, i) in uploadImgUrlListRef" :key="i">{{ item }}</div>
           <div class="add-image" @click="showImgUploaderRef = true"></div>
           <div class="submit-btn" @click="submitPublishPost">Publish</div>
         </div>
@@ -38,11 +40,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, PropType, Ref } from 'vue';
+import { defineComponent, ref, computed, PropType, Ref, watch } from 'vue';
 import { Toast } from 'vant';
 import { sleep } from '@/utils';
 import { useUserInfo } from '@/context';
-import { postCreatePostApi } from '@/constants';
+import { postCreatePostApi, putUploadPostImageApi } from '@/constants';
 import { useAxios } from '@/hooks';
 import { PostTypeItem } from '@/views/post/Post.page.vue';
 
@@ -65,9 +67,7 @@ export default defineComponent({
     const axios = useAxios();
 
     const currentTypeRef: Ref<PostTypeItem | null> = ref(null);
-
     const postInputRef = ref('');
-
     const showPublishCardRef = ref(false);
     const publishStepRef = ref(PublishStep.chooseType);
     const isChooseType = computed(() => publishStepRef.value === PublishStep.chooseType);
@@ -83,12 +83,45 @@ export default defineComponent({
       publishStepRef.value = PublishStep.editText;
     };
 
+    const showImgUploaderRef = ref(false);
+    const uploadImgListRef = ref([]);
+    const uploadImgUrlListRef = ref<string[]>([]);
+
+    watch(showPublishCardRef, (newValue: boolean) => {
+      if (!newValue) {
+        showImgUploaderRef.value = false;
+        uploadImgListRef.value = [];
+        uploadImgUrlListRef.value = [];
+      }
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const afterRead = async (file: any, detail: any) => {
+      const formData = new FormData();
+      formData.append('file', file.file);
+
+      const res = await axios.request({
+        ...putUploadPostImageApi,
+        data: formData,
+      });
+
+      uploadImgUrlListRef.value[detail.index] = `http://lxy520.top/images/post/${res.data.filename}`;
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const beforeDelete = (file: any, detail: any) => {
+      uploadImgUrlListRef.value.splice(detail.index, 1);
+
+      return true;
+    };
+
     const submitPublishPost = async () => {
       await axios.request({
         ...postCreatePostApi,
         data: {
           typeId: currentTypeRef.value?.id,
           content: postInputRef.value,
+          imgList: uploadImgUrlListRef.value,
         },
       });
 
@@ -107,30 +140,6 @@ export default defineComponent({
       context.emit('handleAfterPublish');
     };
 
-    const showImgUploaderRef = ref(false);
-    const uploadImgList = ref([
-      // {
-      //   url: 'https://img.yzcdn.cn/vant/leaf.jpg',
-      // },
-    ]);
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const afterRead = async (file: any) => {
-      const formData = new FormData();
-      formData.append('file', file.file);
-
-      const res = await axios.request({
-        url: '/post/upload/image',
-        method: 'put',
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        data: formData,
-      });
-
-      console.log(res.data.filename);
-    };
-
     return {
       userName,
       showPublishCardRef,
@@ -142,13 +151,16 @@ export default defineComponent({
       currentTypeRef,
       postInputRef,
       submitPublishPost,
-      uploadImgList,
+      uploadImgListRef,
       afterRead,
+      beforeDelete,
       showImgUploaderRef,
+      uploadImgUrlListRef,
     };
   },
 });
 </script>
+
 <style scoped lang="scss">
 @mixin mobile($fn, $padding) {
   .publish-panel {

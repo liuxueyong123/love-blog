@@ -114,13 +114,15 @@ router.route({
     type: 'json',
     body: {
       typeId: Joi.number().required(),
-      content: Joi.string().required()
+      content: Joi.string().required(),
+      imgList: Joi.array()
     }
   },
   handler: async (ctx) => {
     const userId = ctx.state.user.id
     const typeId = Number(ctx.request.body.typeId)
     const content = ctx.request.body.content as string
+    const imgList = ctx.request.body.imgList
 
     const postTypeRes = await getPostTypeById(typeId)
 
@@ -129,7 +131,7 @@ router.route({
       return
     }
 
-    const res = await createPost(userId, typeId, content)
+    const res = await createPost(userId, typeId, content, imgList)
 
     ctx.body = res
   }

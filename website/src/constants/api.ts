@@ -40,3 +40,11 @@ export const postCreatePostApi: AxiosRequestConfig = {
   url: '/post/create',
   method: 'post',
 };
+
+export const putUploadPostImageApi: AxiosRequestConfig = {
+  url: '/post/upload/image',
+  method: 'put',
+  headers: {
+    'Content-Type': 'multipart/form-data',
+  },
+};
