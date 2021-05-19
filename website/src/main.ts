@@ -7,6 +7,7 @@ import {
   Overlay,
   Icon,
   Uploader,
+  Image,
   // Toast
 } from 'vant';
 
@@ -26,6 +27,7 @@ app.use(Popup);
 app.use(Overlay);
 app.use(Icon);
 app.use(Uploader);
+app.use(Image);
 // app.use(Toast);
 
 app.mount('#app');

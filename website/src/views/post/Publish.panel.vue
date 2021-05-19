@@ -30,7 +30,6 @@
             :max-count="9"
             v-show="showImgUploaderRef"
           ></van-uploader>
-          <div v-for="(item, i) in uploadImgUrlListRef" :key="i">{{ item }}</div>
           <div class="add-image" @click="showImgUploaderRef = true"></div>
           <div class="submit-btn" @click="submitPublishPost">Publish</div>
         </div>
