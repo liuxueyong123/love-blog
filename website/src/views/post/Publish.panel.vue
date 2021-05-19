@@ -45,6 +45,7 @@ import { sleep } from '@/utils';
 import { useUserInfo } from '@/context';
 import { postCreatePostApi, putUploadPostImageApi } from '@/constants';
 import { useAxios } from '@/hooks';
+import { getCompressedImageFile } from '@/utils';
 import { PostTypeItem } from '@/views/post/Post.page.vue';
 
 enum PublishStep {
@@ -96,8 +97,10 @@ export default defineComponent({
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const afterRead = async (file: any, detail: any) => {
+      const compressedBlobFile = await getCompressedImageFile(file.file);
+
       const formData = new FormData();
-      formData.append('file', file.file);
+      formData.append('file', compressedBlobFile);
 
       const res = await axios.request({
         ...putUploadPostImageApi,
