@@ -282,10 +282,42 @@ export default defineComponent({
           }
         }
 
-        .van-uploader {
+        &::v-deep(.van-uploader) {
           width: 100%;
           padding: 0 call($fn, 10);
+
+          .van-uploader__preview {
+            margin: 0 call($fn, 8) call($fn, 8) 0;
+            width: call($fn, 88);
+            height: call($fn, 88);
+
+            &:nth-child(3n) {
+              margin: 0 0 call($fn, 8) 0;
+            }
+
+            .van-uploader__preview-image {
+              width: call($fn, 88);
+              height: call($fn, 88);
+              border-radius: call($fn, 3);
+            }
+          }
+
+          .van-uploader__upload {
+            margin: 0 call($fn, 8) call($fn, 8) 0;
+            width: call($fn, 88);
+            height: call($fn, 88);
+            border-radius: call($fn, 3);
+
+            &:nth-child(3n) {
+              margin: 0 0 call($fn, 8) 0;
+            }
+          }
         }
+
+        // .van-uploader {
+        //   width: 100%;
+        //   padding: 0 call($fn, 10);
+        // }
 
         .add-image {
           background-image: url('http://lxy520.top/images/icon-add-image.png');

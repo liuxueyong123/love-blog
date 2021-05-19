@@ -174,6 +174,8 @@ export default defineComponent({
           width: call($fn, 95);
           height: call($fn, 95);
           margin-right: call($fn, 9);
+          border-radius: call($fn, 3);
+          overflow: hidden;
 
           &:nth-child(n + 4) {
             margin-top: call($fn, 10);
