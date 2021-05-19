@@ -1,4 +1,5 @@
 import { Context, Next } from 'koa'
+import config from '../../config'
 import * as exception from '../extension/exception'
 
 const authMiddleWare = async (ctx: Context, next: Next) => {
@@ -10,6 +11,12 @@ const authMiddleWare = async (ctx: Context, next: Next) => {
   }
 
   const parsedCookie = JSON.parse(cookie)
+
+  if (!parsedCookie || !parsedCookie.auth || parsedCookie.auth !== config.authSecret) {
+    exception.notLogin(ctx)
+    return
+  }
+
   ctx.state.user = {
     id: parsedCookie.id,
     name: decodeURIComponent(parsedCookie.name),

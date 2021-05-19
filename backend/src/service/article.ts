@@ -2,11 +2,6 @@ import { ArticleModel, UserModel } from '../model'
 
 // 获取首页最近文章
 export const getRecentArticle = async (userId: number) => {
-  // ArticleModel.create({
-  //   publisherId: 1,
-  //   content: '这是测试的文章数据',
-  //   typeId: 1
-  // })
   const recentArticleList = await ArticleModel.findAll({
     limit: 2,
     order: [['publishTime', 'DESC']],

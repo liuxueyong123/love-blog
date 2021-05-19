@@ -1,6 +1,9 @@
 import koaRouter, { Joi } from 'koa-joi-router'
+import OSS from 'ali-oss'
+import config from '../../config'
 import { getRecentPost, togglePostLike, getPosts, createPostComment, getPostById, getPostTypes, getPostTypeById, createPost } from '../service/post'
 import * as exception from '../extension/exception'
+import { sendMessageToWx } from '../extension/wxMessage'
 
 const router = koaRouter()
 router.prefix('/api/post')
@@ -100,6 +103,8 @@ router.route({
 
     const res = await createPostComment(userId, postId, comment)
 
+    sendMessageToWx(`${ctx.state.user.name}刚刚发表了一条评论，快打开应用查看吧！`)
+
     ctx.body = res
   }
 })
@@ -112,13 +117,15 @@ router.route({
     type: 'json',
     body: {
       typeId: Joi.number().required(),
-      content: Joi.string().required()
+      content: Joi.string().required(),
+      imgList: Joi.array()
     }
   },
   handler: async (ctx) => {
     const userId = ctx.state.user.id
     const typeId = Number(ctx.request.body.typeId)
     const content = ctx.request.body.content as string
+    const imgList = ctx.request.body.imgList
 
     const postTypeRes = await getPostTypeById(typeId)
 
@@ -127,9 +134,34 @@ router.route({
       return
     }
 
-    const res = await createPost(userId, typeId, content)
+    const res = await createPost(userId, typeId, content, imgList)
+
+    sendMessageToWx(`${ctx.state.user.name}刚刚发表了一篇博客，快打开应用查看吧！`)
 
     ctx.body = res
+  }
+})
+
+// 上传博客图片
+router.route({
+  method: 'put',
+  path: '/upload/image',
+  handler: async (ctx) => {
+    const file = (ctx.request as any).files.file
+    const filename = `${Date.now()}-${file.name}`
+
+    const client = new OSS(config.oss)
+
+    try {
+      await client.put(`/images/post/${filename}`, file.path)
+    } catch (e) {
+      exception.uploadImageFailed(ctx)
+      return
+    }
+
+    ctx.body = {
+      filename
+    }
   }
 })
 

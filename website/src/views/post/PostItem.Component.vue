@@ -8,7 +8,17 @@
       </div>
     </div>
     <div class="post-content">
-      {{ post.content }}
+      <div class="content">{{ post.content }}</div>
+      <div class="post-image-wrapper" v-if="imgListRef && imgListRef.length > 0">
+        <van-image
+          v-for="(img, index) in imgListRef"
+          :key="index"
+          fit="cover"
+          @click="handleImageClick(index)"
+          class="post-image"
+          :src="img"
+        />
+      </div>
     </div>
     <div class="post-comment-wrapper">
       <div class="comment-item" v-for="(item, index) in post.postComments" :key="index">
@@ -29,6 +39,7 @@
 <script lang="ts">
 import { defineComponent, PropType, computed, ref } from 'vue';
 import moment from 'moment';
+import { ImagePreview } from 'vant';
 import AvatarComponent from '@/components/AvatarComponent.vue';
 import GiveLikeComponent from '@/components/GiveLike.component.vue';
 import { GenderList } from '@/constants';
@@ -44,6 +55,7 @@ export interface Post {
   writer: string;
   publishTime: string;
   content: string;
+  imgList: string;
   postLikes: number;
   alreadyLike: boolean;
   postComments: PostCommentItem[];
@@ -76,12 +88,23 @@ export default defineComponent({
       context.emit('handleLikeClick');
     };
 
+    const imgListRef = computed(() => (props.post.imgList ? JSON.parse(props.post.imgList) : []));
+    const handleImageClick = (index: number) => {
+      ImagePreview({
+        images: imgListRef.value,
+        startPosition: index,
+        closeable: true,
+      });
+    };
+
     return {
       gender,
       publishTime,
       commentRef,
       handleCommentSubmit,
       handleLikeClick,
+      handleImageClick,
+      imgListRef,
     };
   },
 });
@@ -132,11 +155,37 @@ export default defineComponent({
       border-bottom: 1px solid #eaecef;
       padding-top: call($fn, 10);
       padding-bottom: call($fn, 10);
-      font-size: call($fn, 14);
-      line-height: 1.2;
-      color: $lightTextColor;
-      white-space: pre-wrap;
-      word-break: break-all;
+
+      .content {
+        font-size: call($fn, 14);
+        line-height: 1.2;
+        color: $lightTextColor;
+        white-space: pre-wrap;
+        word-break: break-all;
+      }
+
+      .post-image-wrapper {
+        margin-top: call($fn, 10);
+        display: flex;
+        flex-wrap: wrap;
+
+        .post-image {
+          flex: 0 0 call($fn, 95);
+          width: call($fn, 95);
+          height: call($fn, 95);
+          margin-right: call($fn, 9);
+          border-radius: call($fn, 3);
+          overflow: hidden;
+
+          &:nth-child(n + 4) {
+            margin-top: call($fn, 10);
+          }
+
+          &:nth-child(3n) {
+            margin-right: 0;
+          }
+        }
+      }
     }
 
     .post-comment-wrapper {

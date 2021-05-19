@@ -1,4 +1,5 @@
 import koaRouter, { Joi } from 'koa-joi-router'
+import config from '../../config'
 import * as exception from '../extension/exception'
 import { getUserByPassword } from '../service/user'
 
@@ -31,7 +32,8 @@ router.route({
         id: user.id,
         account: user.account,
         name: encodeURIComponent(user.name),
-        gender: user.gender
+        gender: user.gender,
+        auth: config.authSecret
       }),
       {
         maxAge: 1000 * 60 * 60 * 24 * 7, // cookie有效时长

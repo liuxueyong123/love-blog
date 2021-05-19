@@ -1,9 +1,16 @@
 <template>
   <section class="login-page">
-    <input type="text" v-model="accountRef" />
-    <input type="password" v-model="passwordRef" />
-    <button @click="submitLogin">提交</button>
-    <div style="height: 1000px"></div>
+    <div class="input-wrapper">
+      <div class="title">Account:</div>
+      <input type="text" v-model="accountRef" />
+    </div>
+
+    <div class="input-wrapper">
+      <div class="title">Password:</div>
+      <input type="password" v-model="passwordRef" />
+    </div>
+
+    <button class="submit-btn" @click="submitLogin">Login</button>
   </section>
 </template>
 
@@ -48,6 +55,29 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @mixin mobile($fn, $padding) {
+  .login-page {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .input-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-bottom: call($fn, 10);
+
+      .title {
+        margin-right: call($fn, 20);
+        text-align: right;
+        flex: 0 0 20%;
+      }
+    }
+
+    .submit-btn {
+      width: call($fn, 200);
+      margin: 0 auto;
+    }
+  }
 }
 
 @include mediaMixin;

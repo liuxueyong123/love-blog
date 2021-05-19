@@ -4,6 +4,7 @@ dist
 
 /website/config.js
 /backend/config.ts
+/backend/public
 
 # local env files
 .env.local

@@ -21,6 +21,16 @@
           <img class="close-icon" src="http://lxy520.top/images/icon-close.png" @click="showPublishCardRef = false" />
           <div class="card-title">Publish Post > {{ currentTypeRef && currentTypeRef.typeName }}</div>
           <textarea class="textarea" placeholder="Write something to record..." v-model="postInputRef" />
+          <van-uploader
+            class="img-upload"
+            v-model="uploadImgListRef"
+            multiple
+            :before-read="beforeRead"
+            :after-read="afterRead"
+            :max-count="9"
+            v-show="showImgUploaderRef"
+          ></van-uploader>
+          <div class="add-image" @click="showImgUploaderRef = true"></div>
           <div class="submit-btn" @click="submitPublishPost">Publish</div>
         </div>
       </div>
@@ -29,12 +39,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, PropType, Ref } from 'vue';
+import { defineComponent, ref, computed, PropType, Ref, watch } from 'vue';
 import { Toast } from 'vant';
 import { sleep } from '@/utils';
 import { useUserInfo } from '@/context';
-import { postCreatePostApi } from '@/constants';
+import { postCreatePostApi, putUploadPostImageApi } from '@/constants';
 import { useAxios } from '@/hooks';
+import { getCompressedImageFile } from '@/utils';
 import { PostTypeItem } from '@/views/post/Post.page.vue';
 
 enum PublishStep {
@@ -56,9 +67,7 @@ export default defineComponent({
     const axios = useAxios();
 
     const currentTypeRef: Ref<PostTypeItem | null> = ref(null);
-
     const postInputRef = ref('');
-
     const showPublishCardRef = ref(false);
     const publishStepRef = ref(PublishStep.chooseType);
     const isChooseType = computed(() => publishStepRef.value === PublishStep.chooseType);
@@ -74,12 +83,65 @@ export default defineComponent({
       publishStepRef.value = PublishStep.editText;
     };
 
+    const showImgUploaderRef = ref(false);
+    const uploadImgListRef = ref<{ url: string }[]>([]);
+
+    watch(showPublishCardRef, (newValue: boolean) => {
+      if (!newValue) {
+        showImgUploaderRef.value = false;
+        uploadImgListRef.value = [];
+      }
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const beforeRead = async (file: File | File[]): Promise<File[]> => {
+      if (!Array.isArray(file)) {
+        file = [file];
+      }
+
+      const compressedFileList: File[] = [];
+      for (const item of file) {
+        const compressedFile = await getCompressedImageFile(item, { minCompressedSize: 100 });
+        compressedFileList.push(compressedFile);
+      }
+
+      return new Promise(resolve => {
+        resolve(compressedFileList);
+      });
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const afterRead = async (file: any, detail: any) => {
+      if (!Array.isArray(file)) {
+        file = [file];
+      }
+
+      const fileNameList: string[] = [];
+      for (const item of file) {
+        const formData = new FormData();
+        formData.append('file', item.file);
+        const res = await axios.request({
+          ...putUploadPostImageApi,
+          data: formData,
+          timeout: 30000,
+        });
+        fileNameList.push(res.data.filename);
+      }
+
+      uploadImgListRef.value.splice(
+        detail.index,
+        file.length,
+        ...fileNameList.map(filename => ({ url: `http://lxy520.top/images/post/${filename}` })),
+      );
+    };
+
     const submitPublishPost = async () => {
       await axios.request({
         ...postCreatePostApi,
         data: {
           typeId: currentTypeRef.value?.id,
           content: postInputRef.value,
+          imgList: uploadImgListRef.value.map(x => x.url),
         },
       });
 
@@ -109,10 +171,15 @@ export default defineComponent({
       currentTypeRef,
       postInputRef,
       submitPublishPost,
+      uploadImgListRef,
+      beforeRead,
+      afterRead,
+      showImgUploaderRef,
     };
   },
 });
 </script>
+
 <style scoped lang="scss">
 @mixin mobile($fn, $padding) {
   .publish-panel {
@@ -223,13 +290,55 @@ export default defineComponent({
           outline: none;
           margin-top: call($fn, 10);
           padding: 0 call($fn, 10);
-          height: call($fn, 300);
+          height: call($fn, 250);
 
           &::placeholder {
             font-size: call($fn, 14);
             color: $lightTextColor;
             opacity: 0.5;
           }
+        }
+
+        &::v-deep(.van-uploader) {
+          width: 100%;
+          padding: 0 call($fn, 10);
+
+          .van-uploader__preview {
+            margin: 0 call($fn, 8) call($fn, 8) 0;
+            width: call($fn, 88);
+            height: call($fn, 88);
+
+            &:nth-child(3n) {
+              margin: 0 0 call($fn, 8) 0;
+            }
+
+            .van-uploader__preview-image {
+              width: call($fn, 88);
+              height: call($fn, 88);
+              border-radius: call($fn, 3);
+            }
+          }
+
+          .van-uploader__upload {
+            margin: 0 call($fn, 8) call($fn, 8) 0;
+            width: call($fn, 88);
+            height: call($fn, 88);
+            border-radius: call($fn, 3);
+
+            &:nth-child(3n) {
+              margin: 0 0 call($fn, 8) 0;
+            }
+          }
+        }
+
+        .add-image {
+          background-image: url('http://lxy520.top/images/icon-add-image.png');
+          background-size: 100% 100%;
+          height: call($fn, 20);
+          width: call($fn, 20);
+          position: absolute;
+          left: call($fn, 10);
+          bottom: call($fn, 15);
         }
 
         .submit-btn {

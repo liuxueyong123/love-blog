@@ -1,5 +1,5 @@
 <template>
-  <section class="album-page">album-page</section>
+  <section class="album-page">album is coming soon~</section>
 </template>
 
 <script lang="ts">

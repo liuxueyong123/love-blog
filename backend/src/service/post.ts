@@ -129,6 +129,7 @@ export const getPosts = async (userId: number, page: number, timeOrder: string, 
       writer: item.user!.name,
       publishTime: item.publishTime,
       content: item.content,
+      imgList: item.imgList,
       postComments: item.postComments?.map((x) => ({ content: x.content, writer: x.user!.name })) || [],
       postLikes: item.postLikes!.length,
       alreadyLike: item.postLikes!.filter((x) => x.accountId === userId).length > 0
@@ -149,11 +150,12 @@ export const createPostComment = async (userId: number, postId: number, comment:
   return res
 }
 
-export const createPost = async (userId: number, typeId: number, content: string) => {
+export const createPost = async (userId: number, typeId: number, content: string, imgList: string[]) => {
   const res = await PostModel.create({
     publisherId: userId,
     content,
-    typeId
+    typeId,
+    imgList: JSON.stringify(imgList)
   })
 
   return res
