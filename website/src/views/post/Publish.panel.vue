@@ -21,6 +21,16 @@
           <img class="close-icon" src="http://lxy520.top/images/icon-close.png" @click="showPublishCardRef = false" />
           <div class="card-title">Publish Post > {{ currentTypeRef && currentTypeRef.typeName }}</div>
           <textarea class="textarea" placeholder="Write something to record..." v-model="postInputRef" />
+          <van-uploader
+            class="img-upload"
+            v-model="uploadImgListRef"
+            multiple
+            :after-read="afterRead"
+            :before-delete="beforeDelete"
+            :max-count="9"
+            v-show="showImgUploaderRef"
+          ></van-uploader>
+          <div class="add-image" @click="showImgUploaderRef = true"></div>
           <div class="submit-btn" @click="submitPublishPost">Publish</div>
         </div>
       </div>
@@ -29,12 +39,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, PropType, Ref } from 'vue';
+import { defineComponent, ref, computed, PropType, Ref, watch } from 'vue';
 import { Toast } from 'vant';
 import { sleep } from '@/utils';
 import { useUserInfo } from '@/context';
-import { postCreatePostApi } from '@/constants';
+import { postCreatePostApi, putUploadPostImageApi } from '@/constants';
 import { useAxios } from '@/hooks';
+import { getCompressedImageFile } from '@/utils';
 import { PostTypeItem } from '@/views/post/Post.page.vue';
 
 enum PublishStep {
@@ -56,9 +67,7 @@ export default defineComponent({
     const axios = useAxios();
 
     const currentTypeRef: Ref<PostTypeItem | null> = ref(null);
-
     const postInputRef = ref('');
-
     const showPublishCardRef = ref(false);
     const publishStepRef = ref(PublishStep.chooseType);
     const isChooseType = computed(() => publishStepRef.value === PublishStep.chooseType);
@@ -74,12 +83,47 @@ export default defineComponent({
       publishStepRef.value = PublishStep.editText;
     };
 
+    const showImgUploaderRef = ref(false);
+    const uploadImgListRef = ref([]);
+    const uploadImgUrlListRef = ref<string[]>([]);
+
+    watch(showPublishCardRef, (newValue: boolean) => {
+      if (!newValue) {
+        showImgUploaderRef.value = false;
+        uploadImgListRef.value = [];
+        uploadImgUrlListRef.value = [];
+      }
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const afterRead = async (file: any, detail: any) => {
+      const compressedBlobFile = await getCompressedImageFile(file.file);
+
+      const formData = new FormData();
+      formData.append('file', compressedBlobFile);
+
+      const res = await axios.request({
+        ...putUploadPostImageApi,
+        data: formData,
+      });
+
+      uploadImgUrlListRef.value[detail.index] = `http://lxy520.top/images/post/${res.data.filename}`;
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const beforeDelete = (file: any, detail: any) => {
+      uploadImgUrlListRef.value.splice(detail.index, 1);
+
+      return true;
+    };
+
     const submitPublishPost = async () => {
       await axios.request({
         ...postCreatePostApi,
         data: {
           typeId: currentTypeRef.value?.id,
           content: postInputRef.value,
+          imgList: uploadImgUrlListRef.value,
         },
       });
 
@@ -109,10 +153,16 @@ export default defineComponent({
       currentTypeRef,
       postInputRef,
       submitPublishPost,
+      uploadImgListRef,
+      afterRead,
+      beforeDelete,
+      showImgUploaderRef,
+      uploadImgUrlListRef,
     };
   },
 });
 </script>
+
 <style scoped lang="scss">
 @mixin mobile($fn, $padding) {
   .publish-panel {
@@ -223,13 +273,28 @@ export default defineComponent({
           outline: none;
           margin-top: call($fn, 10);
           padding: 0 call($fn, 10);
-          height: call($fn, 300);
+          height: call($fn, 250);
 
           &::placeholder {
             font-size: call($fn, 14);
             color: $lightTextColor;
             opacity: 0.5;
           }
+        }
+
+        .van-uploader {
+          width: 100%;
+          padding: 0 call($fn, 10);
+        }
+
+        .add-image {
+          background-image: url('http://lxy520.top/images/icon-add-image.png');
+          background-size: 100% 100%;
+          height: call($fn, 20);
+          width: call($fn, 20);
+          position: absolute;
+          left: call($fn, 10);
+          bottom: call($fn, 15);
         }
 
         .submit-btn {

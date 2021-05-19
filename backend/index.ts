@@ -1,4 +1,6 @@
 import Koa from 'koa'
+import path from 'path'
+import KoaBody from 'koa-body'
 import { publicRouters, privateRouters } from './src/router/apiRouter'
 import viewRouter from './src/router/viewRouter'
 import authMiddleWare from './src/middlewares/auth'
@@ -16,6 +18,17 @@ app
       console.log(err)
     }
   })
+  .use(
+    KoaBody({
+      multipart: true,
+      formidable: {
+        // 上传目录
+        uploadDir: path.join(__dirname, 'public'),
+        // 保留文件扩展名
+        keepExtensions: true
+      }
+    })
+  )
   .use(viewRouter.routes())
   .use(publicRouters)
   .use(authMiddleWare)

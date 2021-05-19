@@ -3,7 +3,6 @@
     <input type="text" v-model="accountRef" />
     <input type="password" v-model="passwordRef" />
     <button @click="submitLogin">提交</button>
-    <div style="height: 1000px"></div>
   </section>
 </template>
 
