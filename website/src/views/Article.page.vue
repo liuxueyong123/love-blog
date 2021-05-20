@@ -1,5 +1,5 @@
 <template>
-  <section class="article-page">article-page</section>
+  <section class="article-page">article is coming soon~</section>
 </template>
 
 <script lang="ts">

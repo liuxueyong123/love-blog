@@ -25,6 +25,7 @@
             class="img-upload"
             v-model="uploadImgListRef"
             multiple
+            :before-read="beforeRead"
             :after-read="afterRead"
             :before-delete="beforeDelete"
             :max-count="9"
@@ -96,11 +97,25 @@ export default defineComponent({
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const afterRead = async (file: any, detail: any) => {
-      const compressedBlobFile = await getCompressedImageFile(file.file);
+    const beforeRead = async (file: File) => {
+      const compressedBlobFile = await getCompressedImageFile(file);
 
+      return new Promise(resolve => {
+        resolve(compressedBlobFile);
+      });
+
+      // return new Promise(resolve => {
+      //   resolve(file);
+      // });
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const afterRead = async (file: any, detail: any) => {
       const formData = new FormData();
-      formData.append('file', compressedBlobFile);
+      // const compressedBlobFile = await getCompressedImageFile(file.file);
+      // formData.append('file', compressedBlobFile);
+
+      formData.append('file', file.file);
 
       const res = await axios.request({
         ...putUploadPostImageApi,
@@ -154,6 +169,7 @@ export default defineComponent({
       postInputRef,
       submitPublishPost,
       uploadImgListRef,
+      beforeRead,
       afterRead,
       beforeDelete,
       showImgUploaderRef,
@@ -313,11 +329,6 @@ export default defineComponent({
             }
           }
         }
-
-        // .van-uploader {
-        //   width: 100%;
-        //   padding: 0 call($fn, 10);
-        // }
 
         .add-image {
           background-image: url('http://lxy520.top/images/icon-add-image.png');

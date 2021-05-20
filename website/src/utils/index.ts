@@ -57,14 +57,12 @@ const compressImage = (file: File, quality: number): Promise<Blob> => {
 
 export const getCompressedImageFile = async (file: File, quality?: number) => {
   if (!quality) {
-    if (file.size < 1024 * 50) {
-      quality = 0.95;
-    } else if (file.size < 1024 * 100) {
-      quality = 0.9;
+    if (file.size < 1024 * 100) {
+      quality = 1;
     } else if (file.size < 1024 * 500) {
-      quality = 0.85;
-    } else if (file.size < 1024 * 1024) {
       quality = 0.8;
+    } else if (file.size < 1024 * 1024) {
+      quality = 0.75;
     } else if (file.size < 1024 * 1024 * 5) {
       quality = 0.7;
     } else if (file.size < 1024 * 1024 * 10) {
