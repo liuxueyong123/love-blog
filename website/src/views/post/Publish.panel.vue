@@ -27,7 +27,6 @@
             multiple
             :before-read="beforeRead"
             :after-read="afterRead"
-            :before-delete="beforeDelete"
             :max-count="9"
             v-show="showImgUploaderRef"
           ></van-uploader>
@@ -85,36 +84,27 @@ export default defineComponent({
     };
 
     const showImgUploaderRef = ref(false);
-    const uploadImgListRef = ref([]);
-    const uploadImgUrlListRef = ref<string[]>([]);
+    const uploadImgListRef = ref<{ url: string }[]>([]);
 
     watch(showPublishCardRef, (newValue: boolean) => {
       if (!newValue) {
         showImgUploaderRef.value = false;
         uploadImgListRef.value = [];
-        uploadImgUrlListRef.value = [];
       }
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const beforeRead = async (file: File) => {
-      const compressedBlobFile = await getCompressedImageFile(file);
+      const compressedBlobFile = await getCompressedImageFile(file, { minCompressedSize: 100 });
 
       return new Promise(resolve => {
         resolve(compressedBlobFile);
       });
-
-      // return new Promise(resolve => {
-      //   resolve(file);
-      // });
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const afterRead = async (file: any, detail: any) => {
       const formData = new FormData();
-      // const compressedBlobFile = await getCompressedImageFile(file.file);
-      // formData.append('file', compressedBlobFile);
-
       formData.append('file', file.file);
 
       const res = await axios.request({
@@ -122,14 +112,9 @@ export default defineComponent({
         data: formData,
       });
 
-      uploadImgUrlListRef.value[detail.index] = `http://lxy520.top/images/post/${res.data.filename}`;
-    };
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const beforeDelete = (file: any, detail: any) => {
-      uploadImgUrlListRef.value.splice(detail.index, 1);
-
-      return true;
+      uploadImgListRef.value.splice(detail.index, 1, {
+        url: `http://lxy520.top/images/post/${res.data.filename}`,
+      });
     };
 
     const submitPublishPost = async () => {
@@ -138,7 +123,7 @@ export default defineComponent({
         data: {
           typeId: currentTypeRef.value?.id,
           content: postInputRef.value,
-          imgList: uploadImgUrlListRef.value,
+          imgList: uploadImgListRef.value.map(x => x.url),
         },
       });
 
@@ -171,9 +156,7 @@ export default defineComponent({
       uploadImgListRef,
       beforeRead,
       afterRead,
-      beforeDelete,
       showImgUploaderRef,
-      uploadImgUrlListRef,
     };
   },
 });

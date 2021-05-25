@@ -55,7 +55,19 @@ const compressImage = (file: File, quality: number): Promise<Blob> => {
   });
 };
 
-export const getCompressedImageFile = async (file: File, quality?: number) => {
+export const getCompressedImageFile = async (
+  file: File,
+  options: {
+    quality?: number; // 传递一个恒定质量
+    minCompressedSize?: number; // 最小压缩大小，小于此大小的文件将不被压缩，单位 Kb
+  } = {},
+) => {
+  if (options.minCompressedSize && file.size < options.minCompressedSize * 1024) {
+    console.log(`未进行压缩，文件大小为：${file.size / 1024 / 1024}mb  ｜｜ ${file.size / 1024}kb`);
+    return file;
+  }
+
+  let quality = options.quality;
   if (!quality) {
     if (file.size < 1024 * 100) {
       quality = 1;
