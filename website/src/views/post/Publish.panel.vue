@@ -94,27 +94,44 @@ export default defineComponent({
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const beforeRead = async (file: File) => {
-      const compressedBlobFile = await getCompressedImageFile(file, { minCompressedSize: 100 });
+    const beforeRead = async (file: File | File[]): Promise<File[]> => {
+      if (!Array.isArray(file)) {
+        file = [file];
+      }
+
+      const compressedFileList: File[] = [];
+      for (const item of file) {
+        const compressedFile = await getCompressedImageFile(item, { minCompressedSize: 100 });
+        compressedFileList.push(compressedFile);
+      }
 
       return new Promise(resolve => {
-        resolve(compressedBlobFile);
+        resolve(compressedFileList);
       });
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const afterRead = async (file: any, detail: any) => {
-      const formData = new FormData();
-      formData.append('file', file.file);
+      if (!Array.isArray(file)) {
+        file = [file];
+      }
 
-      const res = await axios.request({
-        ...putUploadPostImageApi,
-        data: formData,
-      });
+      const fileNameList: string[] = [];
+      for (const item of file) {
+        const formData = new FormData();
+        formData.append('file', item.file);
+        const res = await axios.request({
+          ...putUploadPostImageApi,
+          data: formData,
+        });
+        fileNameList.push(res.data.filename);
+      }
 
-      uploadImgListRef.value.splice(detail.index, 1, {
-        url: `http://lxy520.top/images/post/${res.data.filename}`,
-      });
+      uploadImgListRef.value.splice(
+        detail.index,
+        file.length,
+        ...fileNameList.map(filename => ({ url: `http://lxy520.top/images/post/${filename}` })),
+      );
     };
 
     const submitPublishPost = async () => {
