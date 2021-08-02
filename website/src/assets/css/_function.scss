@@ -1,0 +1,19 @@
+@function px2vw($args) {
+  $vwNumber: inspect($args / 19.2);
+  @return $vwNumber + vw;
+}
+
+@function pc-950-px2vw($args) {
+  $vwNumber: inspect($args * 160 / 192);
+  @return $vwNumber + px;
+}
+
+@function mobilePx2vw($args) {
+  $vwNumber: inspect($args / 3.75);
+  @return $vwNumber + vw;
+}
+
+@function ipadPx2vw($args) {
+  $vwNumber: inspect($args * 500 / 375);
+  @return $vwNumber + px;
+}

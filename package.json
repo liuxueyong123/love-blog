@@ -1,0 +1,12 @@
+{
+  "name": "love_blog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "push-online": "ssh root@106.15.170.172 \"cd ./application/love-blog/; git pull; cd ./website; yarn; yarn build; cd ../backend/; yarn; tsc; pm2 reload love_blog\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,25 @@
+@import './_font.scss';
+@import './_function.scss';
+@import './_var.scss';
+@import './_keyframes.scss';
+@import './_mixin.scss';
+
+* {
+	padding: 0;
+	margin: 0;
+  font-family: Whitney SSM;
+  box-sizing: border-box;
+  color: $textColor;
+}
+
+.my-toast {
+  width: 50% !important;
+
+  &.van-toast--fail {
+    background-color: #FEF0F0 !important;
+
+    .van-icon {
+      color: red;
+    }
+  }
+}

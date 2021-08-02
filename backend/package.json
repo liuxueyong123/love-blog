@@ -1,0 +1,42 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --delay 500ms --watch '*' -e ts,tsx --exec 'ts-node' ./index.ts",
+    "pm2": "pm2 start ./dist/index.js -n love_blog"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ali-oss": "^6.15.2",
+    "axios": "^0.21.1",
+    "koa": "^2.13.1",
+    "koa-body": "^4.2.0",
+    "koa-compose": "^4.1.0",
+    "koa-joi-router": "^7.0.0",
+    "koa-router": "^10.0.0",
+    "koa-send": "^5.0.1",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.5.0",
+    "typescript": "^4.2.4"
+  },
+  "devDependencies": {
+    "@types/ali-oss": "^6.0.8",
+    "@types/koa": "^2.13.1",
+    "@types/koa-joi-router": "^5.2.5",
+    "@types/koa-send": "^4.1.2",
+    "@types/node": "^14.14.37",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "eslint": "^7.12.1",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "ts-node": "^9.1.1"
+  }
+}
