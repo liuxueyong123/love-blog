@@ -1,6 +1,7 @@
 import Koa from 'koa'
 import path from 'path'
 import KoaBody from 'koa-body'
+import koaLogger from 'koa-logger'
 import { publicRouters, privateRouters } from './src/router/apiRouter'
 import viewRouter from './src/router/viewRouter'
 import authMiddleWare from './src/middlewares/auth'
@@ -9,6 +10,7 @@ const app = new Koa()
 const port = 8081
 
 app
+  .use(koaLogger())
   .use(async (ctx, next) => {
     try {
       await next()
