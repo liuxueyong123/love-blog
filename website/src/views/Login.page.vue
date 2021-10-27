@@ -2,7 +2,7 @@
   <section class="login-page">
     <img src="http://lxy520.top/images/favicon.png" class="logo" />
     <div class="title">LXY & TSY</div>
-    <div class="desc">Welcome to the our home!</div>
+    <div class="desc">Welcome to our home</div>
     <input class="input" placeholder="Account" type="text" v-model="accountRef" />
     <input class="input" placeholder="Password" type="password" v-model="passwordRef" />
     <van-button :loading="loadingRef" class="login-button" @click="submitLogin" type="primary">Login</van-button>
