@@ -50,4 +50,17 @@ router.route({
   }
 })
 
+router.route({
+  method: 'post',
+  path: '/lxy/test',
+  handler: async (ctx) => {
+    console.log('ctx.request.query', ctx.request.query)
+    console.log('ctx.request.body', ctx.request.body)
+    ctx.body = {
+      name: 'lxy'
+    }
+    ctx.status = 200
+  }
+})
+
 export default router
