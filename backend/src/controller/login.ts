@@ -240,48 +240,51 @@ router.route({
     // const { challenge } = ctx.request.body
 
     ctx.body = {
-      color: '#0976fd',
-      blocks: [
-        {
-          type: 'section',
-          text: {
-            type: 'mrkdwn',
-            text: '11111111223'
-          }
-        },
-        {
-          type: 'actions',
-          elements: [
-            {
-              type: 'button',
-              text: {
-                type: 'plain_text',
-                text: 'Share with channel',
-                emoji: true
-              },
-              value: 'button_click'
-            },
-            {
-              type: 'button',
-              text: {
-                type: 'plain_text',
-                text: '👍',
-                emoji: true
-              },
-              value: 'button_click'
-            },
-            {
-              type: 'button',
-              text: {
-                type: 'plain_text',
-                text: '👎',
-                emoji: true
-              },
-              value: 'button_click'
+      attachments: [{
+        color: '#0976fd',
+        blocks: [
+          {
+            type: 'section',
+            text: {
+              type: 'mrkdwn',
+              text: '11111111223'
             }
-          ]
-        }
-      ]
+          },
+          {
+            type: 'actions',
+            elements: [
+              {
+                type: 'button',
+                text: {
+                  type: 'plain_text',
+                  text: 'Share with channel',
+                  emoji: true
+                },
+                value: 'button_click'
+              },
+              {
+                type: 'button',
+                text: {
+                  type: 'plain_text',
+                  text: '👍',
+                  emoji: true
+                },
+                value: 'button_click'
+              },
+              {
+                type: 'button',
+                text: {
+                  type: 'plain_text',
+                  text: '👎',
+                  emoji: true
+                },
+                value: 'button_click'
+              }
+            ]
+          }
+        ]
+      }]
+
     }
     ctx.status = 200
   }
