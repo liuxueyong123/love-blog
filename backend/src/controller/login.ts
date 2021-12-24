@@ -54,8 +54,8 @@ router.route({
   method: 'post',
   path: '/lxy/test',
   handler: async (ctx) => {
-    console.log('ctx.request.query', ctx.request.query)
     console.log('ctx.request.body', ctx.request.body)
+
     ctx.body = {
       attachments: [
         {
@@ -226,6 +226,21 @@ router.route({
           ]
         }
       ]
+    }
+    ctx.status = 200
+  }
+})
+
+router.route({
+  method: 'post',
+  path: '/lxy/event',
+  handler: async (ctx) => {
+    console.log('ctx.request.body', ctx.request.body)
+
+    const { challenge } = ctx.request.body
+
+    ctx.body = {
+      challenge
     }
     ctx.status = 200
   }
